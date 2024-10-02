@@ -1,5 +1,5 @@
 ## 1st Semester Project
-*__(Subject: Programming Fundamentals)__*
+***(Subject: Programming Fundamentals)***
 
 #### Group Members:
 **[Usman Pirzada](https://github.com/usman-pirzada)** *(24k-3000)*
