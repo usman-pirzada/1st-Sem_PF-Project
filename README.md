@@ -1,6 +1,9 @@
-## 1st Semester Project _(Subject: Programming Fundamentals)_
+## 1st Semester Project
+***(Subject: Programming Fundamentals)***
 
-### Group Members:
-Muhammad Usman (24k-3000)\
-Talal Majid (24k-3090)\
-Mujtaba Ghori (24k-3015)
+#### Group Members:
+**[Usman Pirzada](https://github.com/usman-pirzada)** *(24k-3000)*
+
+**[Talal Majid](https://github.com/TalalMajid)** *(24k-3090)*
+
+**[Mujtaba Ghori](https://github.com/MujtabaKhanGhauri)** *(24k-3015)*
