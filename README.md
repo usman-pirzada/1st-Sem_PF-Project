@@ -5,7 +5,7 @@ FAST School of Computing Fall 2024
 
 ## Project Proposal
 
-**Project Title:** Inventory Management System
+**Project Title:** Inventory Management System &emsp;&emsp;***(Subject:*** *Programming Fundamentals Lab)*
 
 ---
 
