@@ -1,5 +1,5 @@
 <img src="https://github.com/user-attachments/assets/046f52be-ce31-4f64-a3da-d22ca4d213ce" alt="University Logo" width="50" style="vertical-align: middle;"/> <br>
-# NATIONAL UNIVERSITY Of COMPUTER AND EMERGING SCIENCES  
+# NATIONAL UNIVERSITY OF COMPUTER AND EMERGING SCIENCES  
 (KARACHI CAMPUS)  
 FAST School of Computing Fall 2024 
 
