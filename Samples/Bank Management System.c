@@ -1,3 +1,5 @@
+//1st Semester Project of a FAST's senior
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
