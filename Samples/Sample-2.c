@@ -1,3 +1,5 @@
+//By OpenAI's ChatGPT
+
 #include <stdio.h>
 #include <string.h>
 
