@@ -5,6 +5,7 @@ int database();
 int report();
 
 int main() {
-    printf("");
+    printf("\tFAST Grocery Store");
+    printf("\n\t==================");
     return 0;
 }
