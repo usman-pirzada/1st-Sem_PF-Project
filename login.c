@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-int main() {
+int login() {
     
     return 0;
 }
