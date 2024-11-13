@@ -30,10 +30,26 @@ int main() {
 char login(int log) {
     char username[16], pass[21];
     if(log == 1) {  // 1 for login
+        FILE *flogin;
         printf("\nEnter Your Username: ");
         scanf("%s15", &username);
         printf("Enter Your Password: ");
         scanf("%s20", &pass);
+        flogin = fopen("firstlogin.dat", "r");
+        if (flogin == NULL) {
+            printf("\nYou must SignUp first to login!");
+            return 'N';
+        }
+        do {
+            if(getc(flogin) == (username % 10)) {   // here % & / logic will not work as it is char
+                username = username / 10;
+                validate = 1;
+            } else {
+                validate = 2;
+                break;
+            }
+        } while(ch != EOF)
+        fclose(flogin);
         // strcmp after reading from file
         /* if(true) {
         return 'Y';
@@ -49,11 +65,17 @@ char login(int log) {
             }
         }*/
     } else if(log == 2) {   // 2 for SignUp
+        FILE *fsignup;
         printf("\nSet Your Username: ");
         scanf("%s15", &username);
         printf("Set Your Password (Length 8 to 20 digits): ");
         scanf("%s20", &pass);   // there should be chk for pass len here
-        // now write/save username & password to firstlogin.dat file
+        fsignup = fopen("firstlogin.dat", "a");
+        if(fsignup == NULL) {
+            fsignup = fopen("firstlogin.dat", "w");
+        }
+        fprintf(fsignup, "username: %s\tpass: %s", username, pass);
+        fclose(fsignup);
         // if successful written return 'Y', otherwise print error message & call login function again if user want otherwise exit
     } else if(log == 3) {   // 3 for Password only when performing sensitive action
         printf("\nEnter Your Password to proceed: ");
