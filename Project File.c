@@ -7,6 +7,10 @@ int database();
 int report();
 int stock();
 
+struct Database();
+struct Stock();
+struct Report();
+
 int main() {
     printf("\t\tFAST Super Mart");
     printf("\n\t\t==================");
@@ -85,9 +89,30 @@ char login(int log) {
 }
 
 // -------------------Monthly/Yearly Report Function HERE--------------
-int report() {
-    
-    return 0;
+int report(int reprt) {
+    FILE *freport;
+    if(reprt == 1) {    // 1 for writing report
+        freport = fopen("report.dat", "a");
+        if(freport == NULL) {
+            freport = fopen("report.dat", "w");
+        }
+
+        fclose(freport);
+        return 'Y';
+    } else if(reprt == 2) { // 2 for reading report
+        freport = fopen("report.dat", "r");
+        if (freport == NULL) {
+            printf("\n\tNo Reports Found!!");
+            return 'N';
+        }
+        
+        fclose(freport);
+        return 'Y';
+    } else {
+        printf("\nUnable to Process Report!");
+        ch = getch();
+        return 'N';
+    }
 }
 
 // --------------------Stock Maintaining Function HERE-------------
@@ -98,26 +123,44 @@ int stock() {
 
 // -------------------Database Function HERE---------------------
 int database() {
-    char product[3][3][20] = {
-        {"Banana", "Apple", "Mango"},
-        {"Tomato", "Potato", "Carrot"},
-        {"Milk", "Yougurt", "Eggs"}
-    };
-    int productID[3][3] = {
-        {100, 102, 103},
-        {200, 201, 202},
-        {300, 301, 302}
-    };
-    int quantity[3][3] = {
-        {20, 15, 30},
-        {20, 40, 15},
-        {50, 15, 10}
-    };
-    int rates[3][3] = {
-        {80, 170, 250},
-        {150, 120, 70},
-        {220, 320, 320}
-    };
+    // char product[3][3][20] = {
+    //     {"Banana", "Apple", "Mango"},
+    //     {"Tomato", "Potato", "Carrot"},
+    //     {"Milk", "Yougurt", "Eggs"}
+    // };
+    // int productID[3][3] = {
+    //     {100, 102, 103},
+    //     {200, 201, 202},
+    //     {300, 301, 302}
+    // };
+    // int quantity[3][3] = {
+    //     {20, 15, 30},
+    //     {20, 40, 15},
+    //     {50, 15, 10}
+    // };
+    // int rates[3][3] = {
+    //     {80, 170, 250},
+    //     {150, 120, 70},
+    //     {220, 320, 320}
+    // };
 
-    return 0;
+    // return 0;
+}
+
+struct Database {   // Database for User purchase
+    int ID;
+    char Name[20];
+    int Qty;
+    int Price;
+}
+
+struct Stock {  // Stock of Mart
+    int ID;
+    char Name[20];
+    int Qty;
+    int Price;
+}
+
+struct Report { // Monthly & Yearly Reports
+
 }
