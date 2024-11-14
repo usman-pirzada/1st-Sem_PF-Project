@@ -33,10 +33,14 @@ int main() {
 // -------------------Login Function HERE--------------------
 char login(int log) {
     char username[16], pass[21];
+    int count = 0;
+
     if(log == 1) {  // 1 for login
         FILE *flogin;
         printf("\nEnter Your Username: ");
         scanf("%s15", &username);
+        
+        
         printf("Enter Your Password: ");
         scanf("%s20", &pass);
         flogin = fopen("firstlogin.dat", "r");
@@ -152,15 +156,29 @@ struct Database {   // Database for User purchase
     char Name[20];
     int Qty;
     int Price;
-}
+} data;
 
 struct Stock {  // Stock of Mart
     int ID;
     char Name[20];
     int Qty;
     int Price;
-}
+} stock;
 
 struct Report { // Monthly & Yearly Reports
 
+} report;
+
+// ---------------Verify length anywhere for String Input------------
+int takeNcount(int limit) {
+        int count = 0;
+
+        do{
+            count++;    // Count no. of characters of Password
+        } while((username = getchar()) != '\n');
+        if(count <= limit) {
+            return 1;
+        } else {
+            return 0;
+        }
 }
