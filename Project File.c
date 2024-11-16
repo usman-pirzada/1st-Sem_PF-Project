@@ -5,12 +5,12 @@
 
 char login();
 int database();
-int report();
+char report();
 int stock();
 
-struct Database();
-struct Stock();
-struct Report();
+struct Database;
+struct Stock;
+struct Report;
 
 int main() {
     printf("\t\tFAST Super Mart");
@@ -46,7 +46,7 @@ char login(int log) {
         scanf("%s20", &pass);
         flogin = fopen("firstlogin.dat", "r");
         if (flogin == NULL) {
-            perror("\nUnable to login");
+            // perror("\nUnable to login");
             printf("\n\tYou must SignUp first to login!");
             return 'N';
         }
@@ -79,12 +79,10 @@ char login(int log) {
         printf("\nSet Your Username: ");
         scanf("%s15", &username);
         printf("Set Your Password (Length 8 to 20 digits): ");
-        scanf("%s20", &pass);   // there should be chk for pass len here
+        scanf("%s20", &pass);   // there should be chk for pass len here & " " ; not allowed
         fsignup = fopen("firstlogin.dat", "a");
         if(fsignup == NULL) {
-            fsignup = fopen("firstlogin.dat", "w");
-            if(fsignup == NULL) {
-                perror("Error Occured");
+                perror("\nError Occured");
                 return 'N';
             }
         }
@@ -99,12 +97,13 @@ char login(int log) {
 }
 
 // -------------------Monthly/Yearly Report Function HERE--------------
-int report(int reprt) {
+char report(int reprt) {
     FILE *freport;
     if(reprt == 1) {    // 1 for writing report
         freport = fopen("report.dat", "a");
         if(freport == NULL) {
-            freport = fopen("report.dat", "w");
+            perror("\nUnable to generate report");
+            return 'N';
         }
 
         fclose(freport);
