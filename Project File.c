@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <conio.h>
+#include <errno.h>
 
 char login();
 int database();
