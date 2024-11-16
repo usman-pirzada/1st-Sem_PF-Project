@@ -45,7 +45,8 @@ char login(int log) {
         scanf("%s20", &pass);
         flogin = fopen("firstlogin.dat", "r");
         if (flogin == NULL) {
-            printf("\nYou must SignUp first to login!");
+            perror("\nUnable to login");
+            printf("\n\tYou must SignUp first to login!");
             return 'N';
         }
         do {
@@ -81,6 +82,10 @@ char login(int log) {
         fsignup = fopen("firstlogin.dat", "a");
         if(fsignup == NULL) {
             fsignup = fopen("firstlogin.dat", "w");
+            if(fsignup == NULL) {
+                perror("Error Occured");
+                return 'N';
+            }
         }
         fprintf(fsignup, "username: %s\tpass: %s", username, pass);
         fclose(fsignup);
