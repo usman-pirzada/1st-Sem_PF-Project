@@ -3,18 +3,28 @@
 #include <conio.h>
 #include <errno.h>
 
-char login();
+char login(int);
 int database();
-char report();
+char report(int);
 int stock();
+int takeNcount(int);
 
 struct Database;
 struct Stock;
 struct Report;
 
 int main() {
-    printf("\t\tFAST Super Mart");
+    FILE *start;
+    printf("\n\t\tFAST Super Mart");
     printf("\n\t\t==================");
+    start = fopen("firstlogin.dat", "r");
+    if(start == NULL) {
+        printf(\nPlease loin first to proceed ↓.);
+        loginFn(1);
+    } else {
+        printf();
+    }
+    
     // search for firstlogin.dat file & see if $FAST Super Mart$ is in its first line
     /*
     if(found) {
@@ -35,23 +45,23 @@ int main() {
 char login(int log) {
     char username[16], pass[21];
     int count = 0;
+    FILE *fsigninNup;
 
     if(log == 1) {  // 1 for login
-        FILE *flogin;
         printf("\nEnter Your Username: ");
         scanf("%s15", &username);
         
         
         printf("Enter Your Password: ");
         scanf("%s20", &pass);
-        flogin = fopen("firstlogin.dat", "r");
-        if (flogin == NULL) {
+        fsigninNup = fopen("firstlogin.dat", "r");
+        if (fsigninNup == NULL) {
             // perror("\nUnable to login");
             printf("\n\tYou must SignUp first to login!");
             return 'N';
         }
         do {
-            if(getc(flogin) == (username % 10)) {   // here % & / logic will not work as it is char
+            if(getc(fsigninNup) == (username % 10)) {   // here % & / logic will not work as it is char
                 username = username / 10;
                 validate = 1;
             } else {
@@ -59,7 +69,7 @@ char login(int log) {
                 break;
             }
         } while(ch != EOF)
-        fclose(flogin);
+        // fclose(flogin);
         // strcmp after reading from file
         /* if(true) {
         return 'Y';
@@ -75,30 +85,31 @@ char login(int log) {
             }
         }*/
     } else if(log == 2) {   // 2 for SignUp
-        FILE *fsignup;
         printf("\nSet Your Username: ");
         scanf("%s15", &username);
         printf("Set Your Password (Length 8 to 20 digits): ");
         scanf("%s20", &pass);   // there should be chk for pass len here & " " ; not allowed
-        fsignup = fopen("firstlogin.dat", "a");
-        if(fsignup == NULL) {
+        fsigninNup = fopen("firstlogin.dat", "a");
+        if(fsigninNup == NULL) {
                 perror("\nError Occured");
                 return 'N';
             }
         }
-        fprintf(fsignup, "username: %s\tpass: %s", username, pass);
-        fclose(fsignup);
+        fprintf(fsigninNup, "%s;%s\n", username, pass);
         // if successful written return 'Y', otherwise print error message & call login function again if user want otherwise exit
     } else if(log == 3) {   // 3 for Password only when performing sensitive action
         printf("\nEnter Your Password to proceed: ");
         scanf("%s", &pass);
         // validation process here
     }
+
+    fclose(fsigninNup);
 }
 
 // -------------------Monthly/Yearly Report Function HERE--------------
 char report(int reprt) {
     FILE *freport;
+
     if(reprt == 1) {    // 1 for writing report
         freport = fopen("report.dat", "a");
         if(freport == NULL) {
@@ -106,7 +117,7 @@ char report(int reprt) {
             return 'N';
         }
 
-        fclose(freport);
+        // fclose(freport);
         return 'Y';
     } else if(reprt == 2) { // 2 for reading report
         freport = fopen("report.dat", "r");
@@ -115,13 +126,15 @@ char report(int reprt) {
             return 'N';
         }
         
-        fclose(freport);
+        // fclose(freport);
         return 'Y';
     } else {
         printf("\nUnable to Process Report!");
         ch = getch();
         return 'N';
     }
+
+    fclose(freport);
 }
 
 // --------------------Stock Maintaining Function HERE-------------
@@ -156,24 +169,6 @@ int database() {
     // return 0;
 }
 
-struct Database {   // Database for User purchase
-    int ID;
-    char Name[20];
-    int Qty;
-    int Price;
-} data;
-
-struct Stock {  // Stock of Mart
-    int ID;
-    char Name[20];
-    int Qty;
-    int Price;
-} stock;
-
-struct Report { // Monthly & Yearly Reports
-
-} report;
-
 // ---------------Verify length anywhere for String Input------------
 int takeNcount(int limit) {
         int count = 0;
@@ -187,3 +182,22 @@ int takeNcount(int limit) {
             return 0;
         }
 }
+
+// ----------------------------Structures HERE----------------------
+struct Database {   // Database for User purchase
+    int ID;
+    char Name[20];
+    int Qty;
+    int Price;
+} D1;
+
+struct Stock {  // Stock of Mart
+    int ID;
+    char Name[20];
+    int Qty;
+    int Price;
+} S1;
+
+struct Report { // Monthly & Yearly Reports
+
+} R1;
