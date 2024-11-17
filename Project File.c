@@ -19,10 +19,10 @@ int main() {
     printf("\n\t\t==================");
     start = fopen("firstlogin.dat", "r");
     if(start == NULL) {
-        printf(\nPlease loin first to proceed ↓.);
-        loginFn(1);
+        printf("\nPlease login first to proceed. ↓");
+        login(1);
     } else {
-        printf();
+        printf("");
     }
     
     // search for firstlogin.dat file & see if $FAST Super Mart$ is in its first line
@@ -68,7 +68,7 @@ char login(int log) {
                 validate = 2;
                 break;
             }
-        } while(ch != EOF)
+        } while(ch != EOF);
         // fclose(flogin);
         // strcmp after reading from file
         /* if(true) {
@@ -93,10 +93,9 @@ char login(int log) {
         if(fsigninNup == NULL) {
                 perror("\nError Occured");
                 return 'N';
-            }
         }
         fprintf(fsigninNup, "%s;%s\n", username, pass);
-        // if successful written return 'Y', otherwise print error message & call login function again if user want otherwise exit
+        /* if successful written return 'Y', otherwise print error message & call login function again if user want otherwise exit*/
     } else if(log == 3) {   // 3 for Password only when performing sensitive action
         printf("\nEnter Your Password to proceed: ");
         scanf("%s", &pass);
@@ -183,7 +182,7 @@ int takeNcount(int limit) {
         }
 }
 
-// ----------------------------Structures HERE----------------------
+// ----------------------------Structures HERE↓----------------------
 struct Database {   // Database for User purchase
     int ID;
     char Name[20];
