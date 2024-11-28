@@ -47,7 +47,7 @@ int main() {
         }
         
     // } else {
-    fclose(start);  // File was opened just to verify its existance
+    fclose(adminFile); fclose(userFile);  // File was opened just to verify its existance
     printf("\nWhich operation do you want to perform: \n")
     printf("\nPlease login or signUp to proceed:\n 1) Admin Login\n 2) User Login\n 3) Add Admin\n 4) Add User\n 5) Exit\n");
     scanf("%d", &option);
