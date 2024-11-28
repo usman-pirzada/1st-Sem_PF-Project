@@ -19,10 +19,29 @@ int main() {
     printf("\n\t\t==================");
     start = fopen("firstlogin.dat", "r");
     if(start == NULL) {
-        printf("\nPlease login first to proceed. ↓");
-        login(1);
+        printf("\nPlease signUp first to proceed:\n");
+        login(2);
     } else {
-        printf("");
+        printf("\nPlease login or signUp to proceed:\n 1) Login\n 2) SignUp\n 3) Exit\n");
+        scanf("%d", &option);
+        switch(option) {
+            case 1:
+                login(1);  
+                break;
+
+            case 2:
+                login(2);
+                break;
+
+            case 3:
+                exit(1);
+                break;
+
+            default:
+                printf("\n\tInvalid Input!! Try Again\n");
+                main();
+        }
+        fclose(start);
     }
     
     // search for firstlogin.dat file & see if $FAST Super Mart$ is in its first line
