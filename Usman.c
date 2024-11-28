@@ -14,7 +14,7 @@ struct Stock;
 struct Report;
 
 int main() {
-    FILE *start;
+    FILE *start = NULL;
     printf("\n\t\tFAST Super Mart");
     printf("\n\t\t==================");
     start = fopen("firstlogin.dat", "r");
@@ -64,7 +64,7 @@ int main() {
 void enter(int log) {
     char username[16], pass[21];
     int count = 0;
-    FILE *fenter;
+    FILE *fenter = NULL;
     // remember to close login data file
     fenter = fopen("firstlogin.dat", "r");  // Gaining login data from file
     if (fenter == NULL) {   // If login data NOT exist...
