@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#define usersCount 100
 // #include <conio.h>
 
 void enter(int);    // Enter to program by your account
@@ -10,7 +11,7 @@ char report(int);
 int stock();
 int takeNcount(int);
 
-struct account;
+struct Account;
 struct Database;
 struct Stock;
 struct Report;
@@ -28,12 +29,12 @@ int main() {
         scanf("%d", &option);
         switch() {
             case 1:
-                enter(1); // 1 for Admin SignUp
+                enter(1, "Admins.bin");
                 system("CLS");
                 main(); // continue;
                 // break;
             case 2:
-                enter(2);   // 2 for User SignUp
+                enter(1, "Admins.bin");
                 main(); // continue;
                 system("CLS");
                 // break;
@@ -53,19 +54,19 @@ int main() {
     scanf("%d", &option);
     switch(option) {
         case 1:
-            enter(1);   // Send 1 for Admin Login
+            enter(2, "Admins.bin");   // Send 1 with "Admins.bin" for Admins' Login
             menu(1);    // Admin Menu @1
             break;
         case 2:
-            enter(2);   // Send 2 for User Login
+            enter(1, "Users.bin");   // Send 1 with "Users.bin" filename for Users' Login
             menu(2);    // User Menu @2
             break; 
         case 3:
-            enter(3);   // Send 3 for Admin SignUp
+            enter(2, "Admins.bin");   // Send 2 with "Admins.bin" for SignUp
             printf("\n\tNew Admin added successfully!\n");
             break;
         case 4:
-            enter(4);   // Send 4 for User SignUp
+            enter(2, "Users.bin");   // Send 2 with "Users.bin" filename for Users' SignUp
             printf("\n\tNew User added successfully!\n");
             break;
 
@@ -96,15 +97,21 @@ int main() {
 }
 
 // -------------------Login Function HERE--------------------
-void enter(int log) {
+void enter(int log, const char *filename) {
+    struct Account *accounts = NULL;
+    *accounts = (struct Account *) malloc(sizeof(struct Account));
+    if(accounts == NULL) {
+        printf("\nError Allocating Memory!!");
+        main();
+    }
     // char username[16], pass[21];
-    int count = 0;
+    // int count = 0;
     FILE *fenter = NULL;
     // remember to close login data file
-    fenter = fopen("firstlogin.dat", "r");  // Gaining login data from file
+    fenter = fopen(filename, "r");  // Gaining login data from file
     if (fenter == NULL) {   // If login data NOT exist...
         printf("\n\tYou must SignUp first to login!\n");
-        enter(2);   // ...then go for signUp
+        enter(2, &filename);   // ...then go for signUp
         return;
     }
 
@@ -141,7 +148,7 @@ void enter(int log) {
             }
         }*/
     } else if(log == 2) {   // 2 for SignUp
-        fenter = fopen("firstlogin.dat", "a");  // Open file to append signUp data
+        fenter = fopen(filename, "a");  // Open file to append signUp data
         if(fenter == NULL) {
                 perror("\nError Occured");
                 return 'N';
