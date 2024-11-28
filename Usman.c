@@ -96,7 +96,7 @@ int main() {
     return 0;
 }
 
-// -------------------Login Function HERE--------------------
+// -------------------Enter Function HERE--------------------
 void enter(int log, const char *filename) {
     struct Account *accounts = NULL;
     *accounts = (struct Account *) malloc(sizeof(struct Account));
@@ -104,72 +104,59 @@ void enter(int log, const char *filename) {
         printf("\nError Allocating Memory!!");
         main();
     }
-    // char username[16], pass[21];
-    // int count = 0;
-    FILE *fenter = NULL;
-    // remember to close login data file
-    fenter = fopen(filename, "r");  // Gaining login data from file
-    if (fenter == NULL) {   // If login data NOT exist...
-        printf("\n\tYou must SignUp first to login!\n");
-        enter(2, &filename);   // ...then go for signUp
-        return;
-    }
-
+    
     if(log == 1) {  // 1 for login
-        printf("\nEnter Your Username: ");
-        scanf("%s15", &username);
-        
-        
-        printf("Enter Your Password: ");
-        scanf("%s20", &pass);
-        
-        do {
-            if(getc(fenter) == (username % 10)) {   // here % & / logic will not work as it is char
-                username = username / 10;
-                validate = 1;
-            } else {
-                validate = 2;
-                break;
-            }
-        } while(ch != EOF);
-        // fclose(fenter);
-        // strcmp after reading from file
-        /* if(true) {
-        return 'Y';
-        } else {
-            printf("\n\tINVALID Username or Password!!");
-            if(attempt < 3) {
-                attempt++;
-                login(log);
-            } else {
-                printf("\n\tYou have entered wrong username or password 3 times!! Press any key to exit the program.");
-                ch = getch();
-                exit();
-            }
-        }*/
-    } else if(log == 2) {   // 2 for SignUp
-        fenter = fopen(filename, "a");  // Open file to append signUp data
-        if(fenter == NULL) {
-                perror("\nError Occured");
-                return 'N';
+        char username[20], password[15];
+        FILE *fileRead = NULL;
+        fileRead = fopen(filename, "rb");
+        if (fileRead == NULL) {
+            perror("\n\tError Occured");
+            main();
         }
 
-        printf("\nSet Your Username: ");
-        scanf("%s15", &username);
-        printf("Set Your Password (Length 8 to 20 digits): ");
-        scanf("%s20", &pass);   // there should be chk for pass len here & " " ; not allowed
-        
-        fprintf(fenter, "%s;%s\n", username, pass); // Writing signUp data
-        printf("\nSignup successful!! Now login to your created account\n");
-        enter(1);   // Go to login for created account
-    }
-    // else if(log == 3) {   // 3 for Password only when performing sensitive action
-    //     printf("\nEnter Your Password to proceed: ");
-    //     scanf("%s", &pass);
-    //     // validation process here
-    // }
+        int count = 0
+        while(fread(&accounts[count], sizeof(struct Accounts), 1, fileRead)) {  // Reading & storing users' login data to structure
+            count++;
+        }
+        fclose(fileRead);
 
-    fclose(fenter);
+        // Input & Validation Below
+        printf("\nEnter Your Username: ");
+        scanf("%s20", &username);
+        printf("Enter Your Password: ");
+        scanf("%s15", &password);
+        // validate here length of username & password
+
+        for(int i = 0; i < count; i++) {
+            if(strcp(accounts[i]->username, username) == 0 && strcmp(accounts->password, password) == 0) {
+                printf("\nLogin successful!!\n");
+                return;
+            } else {
+                printf("\n\tInvalid Username or Password!!");
+                main();
+            }
+        }
+    
+    } else if(log == 2) {   // 2 for SignUp
+        FILE *fileWrite = NULL;
+        fileWrite = fopen(filename, "ab");  // Open file to append signUp data
+        if(fileWrite == NULL) {
+                perror("\n\tError Occured");
+                main();
+        }
+        
+        // Collect signup data in structure
+        printf("\nSet Your Username: ");
+        scanf("%s20", &accounts->username);
+        printf("Set Your Password (Length 8 to 20 digits): ");
+        scanf("%s15", &accounts->password);
+
+        fwrite(&accounts, sizeof(struct Account), 1, fileWrite);    // Write structure (signup data) to file
+        fclose(fileWrite);
+        
+        printf("\nSignup successful!! Now login to your created account\n");
+        enter(1, &filename);   // Go to login for created account
+    }
 }
 
 // -------------------Monthly/Yearly Report Function HERE--------------
