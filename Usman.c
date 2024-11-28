@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <errno.h>
 
-char login(int);
+void enter(int);
 int database();
 char report(int);
 int stock();
@@ -20,17 +20,17 @@ int main() {
     start = fopen("firstlogin.dat", "r");
     if(start == NULL) {
         printf("\nPlease signUp first to proceed:\n");
-        login(2);
+        enter(2);
     } else {
         printf("\nPlease login or signUp to proceed:\n 1) Login\n 2) SignUp\n 3) Exit\n");
         scanf("%d", &option);
         switch(option) {
             case 1:
-                login(1);  
+                enter(1);
                 break;
 
             case 2:
-                login(2);
+                enter(2);
                 break;
 
             case 3:
@@ -61,10 +61,17 @@ int main() {
 }
 
 // -------------------Login Function HERE--------------------
-char login(int log) {
+void enter(int log) {
     char username[16], pass[21];
     int count = 0;
-    FILE *fsigninNup;
+    FILE *fenter;
+    // remember to close login data file
+    fenter = fopen("firstlogin.dat", "r");  // Gaining login data from file
+    if (fenter == NULL) {   // If login data NOT exist...
+        printf("\n\tYou must SignUp first to login!\n");
+        enter(2);   // ...then go for signUp
+        return;
+    }
 
     if(log == 1) {  // 1 for login
         printf("\nEnter Your Username: ");
@@ -73,14 +80,9 @@ char login(int log) {
         
         printf("Enter Your Password: ");
         scanf("%s20", &pass);
-        fsigninNup = fopen("firstlogin.dat", "r");
-        if (fsigninNup == NULL) {
-            // perror("\nUnable to login");
-            printf("\n\tYou must SignUp first to login!");
-            return 'N';
-        }
+        
         do {
-            if(getc(fsigninNup) == (username % 10)) {   // here % & / logic will not work as it is char
+            if(getc(fenter) == (username % 10)) {   // here % & / logic will not work as it is char
                 username = username / 10;
                 validate = 1;
             } else {
@@ -88,7 +90,7 @@ char login(int log) {
                 break;
             }
         } while(ch != EOF);
-        // fclose(flogin);
+        // fclose(fenter);
         // strcmp after reading from file
         /* if(true) {
         return 'Y';
@@ -104,24 +106,28 @@ char login(int log) {
             }
         }*/
     } else if(log == 2) {   // 2 for SignUp
+        fenter = fopen("firstlogin.dat", "a");  // Open file to append signUp data
+        if(fenter == NULL) {
+                perror("\nError Occured");
+                return 'N';
+        }
+
         printf("\nSet Your Username: ");
         scanf("%s15", &username);
         printf("Set Your Password (Length 8 to 20 digits): ");
         scanf("%s20", &pass);   // there should be chk for pass len here & " " ; not allowed
-        fsigninNup = fopen("firstlogin.dat", "a");
-        if(fsigninNup == NULL) {
-                perror("\nError Occured");
-                return 'N';
-        }
-        fprintf(fsigninNup, "%s;%s\n", username, pass);
-        /* if successful written return 'Y', otherwise print error message & call login function again if user want otherwise exit*/
-    } else if(log == 3) {   // 3 for Password only when performing sensitive action
-        printf("\nEnter Your Password to proceed: ");
-        scanf("%s", &pass);
-        // validation process here
+        
+        fprintf(fenter, "%s;%s\n", username, pass); // Writing signUp data
+        printf("\nSignup successful!! Now login to your created account\n");
+        enter(1);   // Go to login for created account
     }
+    // else if(log == 3) {   // 3 for Password only when performing sensitive action
+    //     printf("\nEnter Your Password to proceed: ");
+    //     scanf("%s", &pass);
+    //     // validation process here
+    // }
 
-    fclose(fsigninNup);
+    fclose(fenter);
 }
 
 // -------------------Monthly/Yearly Report Function HERE--------------
