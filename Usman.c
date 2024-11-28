@@ -4,7 +4,7 @@
 #include <errno.h>
 // #include <conio.h>
 
-void enter(int);
+void enter(int);    // Enter to program by your account
 int database();
 char report(int);
 int stock();
