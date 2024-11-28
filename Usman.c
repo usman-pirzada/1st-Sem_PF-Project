@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include <conio.h>
 #include <errno.h>
+// #include <conio.h>
 
 void enter(int);
 int database();
@@ -9,40 +9,74 @@ char report(int);
 int stock();
 int takeNcount(int);
 
+struct account;
 struct Database;
 struct Stock;
 struct Report;
 
 int main() {
-    FILE *start = NULL;
+    FILE *adminFile = NULL;
+    FILE *userFile = NULL;
+
     printf("\n\t\tFAST Super Mart");
     printf("\n\t\t==================");
-    start = fopen("firstlogin.dat", "r");
-    if(start == NULL) {
-        printf("\nPlease signUp first to proceed:\n");
-        enter(2);
-    } else {
-        printf("\nPlease login or signUp to proceed:\n 1) Login\n 2) SignUp\n 3) Exit\n");
+    adminFile = fopen("Admins.bin", "rb");
+    userFile = fopen("Admins.bin", "rb");
+    if(adminFile == NULL || userFile == NULL) {
+        printf("\nNo Account Created Yet!! Please signUp to proceed:\n 1) Add Admin Account\n 2) Add User Account\n");
         scanf("%d", &option);
-        switch(option) {
+        switch() {
             case 1:
-                enter(1);
-                break;
-
+                enter(1); // 1 for Admin SignUp
+                system("CLS");
+                main(); // continue;
+                // break;
             case 2:
-                enter(2);
-                break;
-
+                enter(2);   // 2 for User SignUp
+                main(); // continue;
+                system("CLS");
+                // break;
             case 3:
-                exit(1);
-                break;
-
+                exit(0);
+                system("CLS");
+                // break;
             default:
                 printf("\n\tInvalid Input!! Try Again\n");
-                main();
+                main(); // continue;
         }
-        fclose(start);
+        
+    // } else {
+    fclose(start);  // File was opened just to verify its existance
+    printf("\nWhich operation do you want to perform: \n")
+    printf("\nPlease login or signUp to proceed:\n 1) Admin Login\n 2) User Login\n 3) Add Admin\n 4) Add User\n 5) Exit\n");
+    scanf("%d", &option);
+    switch(option) {
+        case 1:
+            enter(1);   // Send 1 for Admin Login
+            menu(1);    // Admin Menu @1
+            break;
+        case 2:
+            enter(2);   // Send 2 for User Login
+            menu(2);    // User Menu @2
+            break; 
+        case 3:
+            enter(3);   // Send 3 for Admin SignUp
+            printf("\n\tNew Admin added successfully!\n");
+            break;
+        case 4:
+            enter(4);   // Send 4 for User SignUp
+            printf("\n\tNew User added successfully!\n");
+            break;
+
+        case 5:
+            exit(0);
+            break;
+
+        default:
+            printf("\n\tInvalid Input!! Try Again\n");
+            main(); // continue;
     }
+    // }
     
     // search for firstlogin.dat file & see if $FAST Super Mart$ is in its first line
     /*
@@ -62,7 +96,7 @@ int main() {
 
 // -------------------Login Function HERE--------------------
 void enter(int log) {
-    char username[16], pass[21];
+    // char username[16], pass[21];
     int count = 0;
     FILE *fenter = NULL;
     // remember to close login data file
@@ -131,6 +165,7 @@ void enter(int log) {
 }
 
 // -------------------Monthly/Yearly Report Function HERE--------------
+/*
 char report(int reprt) {
     FILE *freport;
 
@@ -160,14 +195,16 @@ char report(int reprt) {
 
     fclose(freport);
 }
-
+*/
 // --------------------Stock Maintaining Function HERE-------------
+/*
 int stock() {
     
     return 0;
 }
-
+*/
 // -------------------Database Function HERE---------------------
+/*
 int database() {
     // char product[3][3][20] = {
     //     {"Banana", "Apple", "Mango"},
@@ -192,7 +229,8 @@ int database() {
 
     // return 0;
 }
-
+*/
+/*
 // ---------------Verify length anywhere for String Input------------
 int takeNcount(int limit) {
         int count = 0;
@@ -206,8 +244,13 @@ int takeNcount(int limit) {
             return 0;
         }
 }
-
+*/
 // ----------------------------Structures HERE↓----------------------
+struct Account {
+    char username[20];
+    char password[15];
+} account[100];
+/*
 struct Database {   // Database for User purchase
     int ID;
     char Name[20];
@@ -222,6 +265,7 @@ struct Stock {  // Stock of Mart
     int Price;
 } S1;
 
-struct Report { // Monthly & Yearly Reports
+struct Report { // Reports
 
 } R1;
+*/
