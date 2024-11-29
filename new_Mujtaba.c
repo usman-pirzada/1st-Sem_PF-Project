@@ -24,13 +24,11 @@ int addToCart(int n){
 	
 	n+=1;
 	
-	if(n<1){
-		struct product *Name=(struct product *)malloc((n+1)*sizeof(struct product));
+	struct product *Name=(struct product *)malloc((n+1)*sizeof(struct product));
 		if(name==NULL){
 			printf("\nMemory Allocation Failed!");
 			return 1;
 		}
-	}
 	
 	for(int i=0;i<n;i++){
 		printf("Enter the name of the item: ");
