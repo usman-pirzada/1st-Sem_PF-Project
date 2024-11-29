@@ -106,7 +106,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
             main();
         }
 
-        int count = 0
+        int count = 0;
         while(fread(&accounts[count], sizeof(struct Account), 1, fileRead)) {  // Reading & storing users' login data to structure  // & removed
             count++;
         }
@@ -114,7 +114,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
 
         // Input & Validation Below
         printf("\nEnter Your Username: ");
-        scanf("%s20", &username);
+        scanf("%19s", &username);   // see correction
         printf("Enter Your Password: ");
         scanf("%s15", &password);
         // validate here length of username & password
