@@ -84,8 +84,8 @@ int main() {
 }
 
 // -------------------Enter Function HERE--------------------
-void enter(int log, const char *filename/*, int userCount*/) {  // variable is global
-    struct Account *accounts = NULL;
+void enter(int log, const char *filename/*, int usersCount*/) {  // variable is global
+    struct Account *accounts = NULL;    // see for correction
     *accounts = (struct Account *) malloc(sizeof(struct Account));  // This size is enough to store SignUp data for writing to binary file
     if(accounts == NULL) {
         printf("\nError Allocating Memory!!");
@@ -94,7 +94,7 @@ void enter(int log, const char *filename/*, int userCount*/) {  // variable is g
 
     if(log == 1) {  // 1 for login
         char username[20], password[15];
-        *accounts = (struct Account *) realloc(accounts, userCount * sizeof(struct Account));   // correction needed
+        *accounts = (struct Account *) realloc(accounts, usersCount * sizeof(struct Account));   // correction needed
         if(accounts == NULL) {
             printf("\nError Allocating Memory!!");
             main();
@@ -107,7 +107,7 @@ void enter(int log, const char *filename/*, int userCount*/) {  // variable is g
         }
 
         int count = 0
-        while(fread(accounts[count], sizeof(struct Accounts), 1, fileRead)) {  // Reading & storing users' login data to structure  // & removed
+        while(fread(&accounts[count], sizeof(struct Account), 1, fileRead)) {  // Reading & storing users' login data to structure  // & removed
             count++;
         }
         fclose(fileRead);
