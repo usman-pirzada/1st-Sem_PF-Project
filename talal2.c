@@ -17,14 +17,14 @@ struct cartItem {
 };
 
 // Function prototypes
-int login(int log);
-void addToCart(struct cartItem cart[], int *cartSize);
-void removeFromCart(struct cartItem cart[], int *cartSize);
-void generateBill(struct cartItem cart[], int cartSize);
-void viewInventory();
-void addInventory();
-void removeInventory();
-void generateReport();
+int login(int log);      //usman
+void addToCart(struct cartItem cart[], int *cartSize);        //mujtaba
+void removeFromCart(struct cartItem cart[], int *cartSize);     //mujtaba
+void generateBill(struct cartItem cart[], int cartSize);      //mujtaba
+void viewInventory();             //talal
+void addInventory();               //talal
+void removeInventory();             //talal
+void generateReport();   //usman
 
 // Main function
 int main() {
@@ -74,7 +74,7 @@ int main() {
                     printf("\nEmployee Options:\n");
                     printf("1. Add to Cart\n");
                     printf("2. Remove from Cart\n");
-                    printf("3. View Inventory\n");
+                    // printf("3. View Inventory\n");
                     printf("4. Place Order\n");
                     printf("Enter your choice: ");
                     scanf("%d", &choice);
@@ -130,7 +130,7 @@ int main() {
                     printf("\nManager Options:\n");
                     printf("1. Add Inventory\n");
                     printf("2. Remove Inventory\n");
-                    printf("3. Track Product Stock\n");
+                    printf("3. (View Inventory) Track Product Stock\n");
                     printf("4. Generate Report\n");
                     printf("Enter your choice: ");
                     scanf("%d", &choice);
@@ -334,7 +334,36 @@ void addInventory() {
         printf("Error opening inventory.\n");
         return;
     }
+    // Check if the file is empty to add default products
+    fseek(file, 0, SEEK_END);  // Move to the end of the file
+    long fileSize = ftell(file);  // Get the size of the file
+    if (fileSize == 0) {  // If file is empty
+        printf("File is empty. Adding default products...\n");
 
+        struct product prod[15] = {
+                {"Bread", 100, 2},
+                {"Milk", 50, 1},
+                {"Eggs", 30, 3},
+                {"Rice", 20, 10},
+                {"Sugar", 20, 3},
+                {"Cooking Oil", 25, 5},
+                {"Salt", 50, 1},
+                {"Tomatoes", 30, 2},
+                {"Potatoes", 40, 1},
+                {"Onions", 30, 1},
+                {"Canned Beans", 20, 2},
+                {"Toilet Paper", 40, 1},
+                {"Dishwashing Liquid", 15, 2},
+                {"Shampoo", 20, 3},
+                {"Toothpaste", 25, 1}
+        };
+        // Write the products to the file
+        for (int i = 0; i < 15; i++) {
+            fprintf(file, "%s %d %d\n", products[i].name, products[i].quantity, products[i].price);
+        }
+
+        printf("Default products added to inventory.\n");
+    }
     struct product prod;
     printf("Enter product name to add: ");
     scanf("%s", prod.name);
