@@ -94,7 +94,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
 
     if(log == 1) {  // 1 for login
         char username[20], password[15];
-        *accounts = (struct Account *) realloc(accounts, usersCount * sizeof(struct Account));   // correction needed
+        /***/accounts = (struct Account *) realloc(accounts, usersCount * sizeof(struct Account));   // correction needed
         if(accounts == NULL) {
             printf("\nError Allocating Memory!!");
             main();
@@ -114,13 +114,13 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
 
         // Input & Validation Below
         printf("\nEnter Your Username: ");
-        scanf("%19s", &username);   // see correction
+        scanf("%19s", &username);   // see correction 19 or 20
         printf("Enter Your Password: ");
-        scanf("%s15", &password);
+        scanf("%14s", &password);   // see 14 or 15
         // validate here length of username & password
 
         for(int i = 0; i < count; i++) {
-            if(strcmp(accounts[i]->username, username) == 0 && strcmp(accounts->password, password) == 0) {
+            if(strcmp(accounts[i].username, username) == 0 && strcmp(accounts[i].password, password) == 0) {
                 printf("\nLogin successful!!\n");
                 return;
             } else {
@@ -143,7 +143,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         printf("Set Your Password (Length 8 to 20 digits): ");
         scanf("%s15", &accounts->password);
 
-        fwrite(&accounts, sizeof(struct Account), 1, fileWrite);    // Write structure (signup data) to file
+        fwrite(accounts, sizeof(struct Account), 1, fileWrite);    // Write structure (signup data) to file // & removed
         fclose(fileWrite);
         
         printf("\nSignup successful!! Now login to your created account\n");
