@@ -3,8 +3,10 @@
 #include<string.h>
 
 struct product{
+	int prod_id;
 	char name[20];
 	int quantity;
+	float price;
 };
 
 int addToCart(int n){
@@ -23,7 +25,7 @@ int addToCart(int n){
 	n+=1;
 	
 	if(n<1){
-		struct product *Name=(struct product *)malloc(n*sizeof(struct product));
+		struct product *Name=(struct product *)malloc((n+1)*sizeof(struct product));
 		if(name==NULL){
 			printf("\nMemory Allocation Failed!");
 			return 1;
