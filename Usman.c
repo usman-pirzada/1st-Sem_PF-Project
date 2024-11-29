@@ -5,11 +5,11 @@
 #define usersCount 100
 // #include <conio.h>
 
-void enter(int);    // Enter to program by your account
+void enter(int, const char *, int);    // Enter to program by your account
 int database();
 char report(int);
 int stock();
-int takeNcount(int);
+// int takeNcount(int);
 
 struct Account;
 struct Database;
@@ -80,33 +80,25 @@ int main() {
     }
     // }
     
-    // search for firstlogin.dat file & see if $FAST Super Mart$ is in its first line
-    /*
-    if(found) {
-        if(login(1) == 'Y') {   // Passing 1 for login
-            // will continue next operations
-        }
-    } else {
-        if(login(2) == 'Y') {   // Passing 2 for SignUp
-            // will continue next operations
-        }
-    }
-    */
-    
     return 0;
 }
 
 // -------------------Enter Function HERE--------------------
-void enter(int log, const char *filename) {
+void enter(int log, const char *filename, int userCount) {
     struct Account *accounts = NULL;
-    *accounts = (struct Account *) malloc(sizeof(struct Account));
+    *accounts = (struct Account *) malloc(sizeof(struct Account));  // This size is enough to store SignUp data for writing to binary file
     if(accounts == NULL) {
         printf("\nError Allocating Memory!!");
         main();
     }
-    
+
     if(log == 1) {  // 1 for login
         char username[20], password[15];
+        *accounts = (struct Account *) realloc(userCount * sizeof(struct Account));
+        if(accounts == NULL) {
+            printf("\nError Allocating Memory!!");
+            main();
+        }
         FILE *fileRead = NULL;
         fileRead = fopen(filename, "rb");
         if (fileRead == NULL) {
@@ -141,8 +133,8 @@ void enter(int log, const char *filename) {
         FILE *fileWrite = NULL;
         fileWrite = fopen(filename, "ab");  // Open file to append signUp data
         if(fileWrite == NULL) {
-                perror("\n\tError Occured");
-                main();
+            perror("\n\tError Occured");
+            main();
         }
         
         // Collect signup data in structure
@@ -156,6 +148,9 @@ void enter(int log, const char *filename) {
         
         printf("\nSignup successful!! Now login to your created account\n");
         enter(1, &filename);   // Go to login for created account
+    } else {
+        printf("\n\n\tAn Unexpected Error Occured!!");
+        exit(1);
     }
 }
 
