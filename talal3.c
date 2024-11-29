@@ -33,7 +33,7 @@ int main() {
    
     // Add default items to inventory when program starts
     addInventory();
-
+    
     while (1) {
         printf("\n==========================\n");
         printf("1. Employee Options\n");
