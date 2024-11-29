@@ -25,38 +25,56 @@ int addToCart(int n){
 	n+=1;
 	
 	struct product *Name=(struct product *)malloc((n+1)*sizeof(struct product));
-		if(name==NULL){
-			printf("\nMemory Allocation Failed!");
-			return 1;
-		}
+	if(name==NULL){
+		printf("\nMemory Allocation Failed!");
+		return 1;
+	}
+
+	float totalCost = 0;
 	
 	for(int i=0;i<n;i++){
 		printf("Enter the name of the item: ");
 		scanf("%s",Name[i].name);
 		printf("Enter Quantity: ");
-		scanf("%d",Name[i].quantity);
+		scanf("%d",&Name[i].quantity);
 		
-		int available;
+		fseek(db, 0, SEEK_SET);	// Reset db pointer to beginning of file to search products
+        int found = 0;
+        char productName[100];
+        int available;
+        float price;
 		
-		fscanf(db,"%s quantity: %d",buffer,&available);
-		if(strcmp(buffer,Name.name)==0){
-			if(available<=0){
-				printf("\nItem is out of stock");
-				return;
+		while(fscanf(db,"%s quantity: %d",buffer,&available,&price) == 3){
+
+			if(strcmp(buffer,Name.name)==0){
+				found = 1;
+				if(available<=0){
+					printf("\nItem is out of stock");
+					free(Name);
+					fcose(db);
+					return 0;
+				}
+				printf("\nAdded to cart Successfully!");
+				
+				Nmae[i].price = price;
+				totalCost += Name[i].quantity * price;
+
+				FILE *orderHistory=fopen("order_history.txt","a");
+				if(order_history==NULL){
+					printf("Error opening file");
+					return 1;
+				}
+				
+				fprintf(order_history,"%s\tQuantity: %d",Name.name,Name.quantity,price);
+				fclose(order_history);
+				break;
 			}
-			printf("\nAdded to cart Successfully!");
-			return;
 		}
-		printf("The item does not exist!");
+
+		
 	}
 	
-	FILE *orderHistory=fopen("order_history.txt","a");
-	if(order_history==NULL){
-		printf("Error opening file");
-		return 1;
-	}
 	
-	fprintf(order_history,"%s\tQuantity: %d",Name.name,Name.quantity);
 	
 	free(buffer);
 	free(Name);
