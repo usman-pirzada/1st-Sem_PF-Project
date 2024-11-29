@@ -205,7 +205,7 @@ int takeNcount(int limit) {
 struct Account {
     char username[20];
     char password[15];
-} account[100];
+};
 /*
 struct Database {   // Database for User purchase
     int ID;
