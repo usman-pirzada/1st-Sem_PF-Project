@@ -38,7 +38,7 @@ int main() {
         printf("3. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-        
+
         int loggedIn = 0;
         int signedUp = 0;
         switch (choice) {
@@ -70,7 +70,7 @@ int main() {
                         printf("Invalid choice\n");        
                 }
 
-                if(loggedIn == 1 || signedUp == 1){    
+                if(loggedIn == 1 || signedUp == 1){
                     printf("\nEmployee Options:\n");
                     printf("1. Add to Cart\n");
                     printf("2. Remove from Cart\n");
