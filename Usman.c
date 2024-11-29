@@ -23,15 +23,15 @@ int main() {
     printf("\n\t\tFAST Super Mart");
     printf("\n\t\t==================");
     adminFile = fopen("Admins.bin", "rb");
-    userFile = fopen("Admins.bin", "rb");
-    if(adminFile == NULL || userFile == NULL) {             //correction
+    userFile = fopen("Users.bin", "rb");
+    if(adminFile == NULL && userFile == NULL) {
         printf("\nNo Account Created Yet!! Please signUp to proceed:\n 1) Add Admin Account\n 2) Add User Account\n");
         scanf("%d", &option);
         switch() {
             case 1:
                 enter(1, "Admins.bin");
                 system("CLS");
-                main(); // continue;
+                main(); // continue;    // correctit as menu loop mein chale ga ye main nhi
                 // break;
             case 2:
                 enter(1, "Admins.bin");
@@ -84,7 +84,7 @@ int main() {
 }
 
 // -------------------Enter Function HERE--------------------
-void enter(int log, const char *filename, int userCount) {
+void enter(int log, const char *filename/*, int userCount*/) {  // variable is global
     struct Account *accounts = NULL;
     *accounts = (struct Account *) malloc(sizeof(struct Account));  // This size is enough to store SignUp data for writing to binary file
     if(accounts == NULL) {
@@ -94,7 +94,7 @@ void enter(int log, const char *filename, int userCount) {
 
     if(log == 1) {  // 1 for login
         char username[20], password[15];
-        *accounts = (struct Account *) realloc(userCount * sizeof(struct Account));
+        *accounts = (struct Account *) realloc(accounts, userCount * sizeof(struct Account));   // correction needed
         if(accounts == NULL) {
             printf("\nError Allocating Memory!!");
             main();
@@ -107,7 +107,7 @@ void enter(int log, const char *filename, int userCount) {
         }
 
         int count = 0
-        while(fread(&accounts[count], sizeof(struct Accounts), 1, fileRead)) {  // Reading & storing users' login data to structure
+        while(fread(accounts[count], sizeof(struct Accounts), 1, fileRead)) {  // Reading & storing users' login data to structure  // & removed
             count++;
         }
         fclose(fileRead);
