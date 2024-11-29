@@ -38,7 +38,7 @@ int main() {
         printf("3. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-
+        
         int loggedIn = 0;
         int signedUp = 0;
         switch (choice) {

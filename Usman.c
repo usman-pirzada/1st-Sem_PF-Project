@@ -24,7 +24,7 @@ int main() {
     printf("\n\t\t==================");
     adminFile = fopen("Admins.bin", "rb");
     userFile = fopen("Admins.bin", "rb");
-    if(adminFile == NULL || userFile == NULL) {
+    if(adminFile == NULL || userFile == NULL) {             //correction
         printf("\nNo Account Created Yet!! Please signUp to proceed:\n 1) Add Admin Account\n 2) Add User Account\n");
         scanf("%d", &option);
         switch() {
@@ -49,12 +49,12 @@ int main() {
         
     // } else {
     fclose(adminFile); fclose(userFile);  // File was opened just to verify its existance
-    printf("\nWhich operation do you want to perform: \n")
+    printf("\nWhich operation do you want to perform: \n");
     printf("\nPlease login or signUp to proceed:\n 1) Admin Login\n 2) User Login\n 3) Add Admin\n 4) Add User\n 5) Exit\n");
     scanf("%d", &option);
     switch(option) {
         case 1:
-            enter(2, "Admins.bin");   // Send 1 with "Admins.bin" for Admins' Login
+            enter(1, "Admins.bin");   // Send 1 with "Admins.bin" for Admins' Login
             menu(1);    // Admin Menu @1
             break;
         case 2:
@@ -120,7 +120,7 @@ void enter(int log, const char *filename, int userCount) {
         // validate here length of username & password
 
         for(int i = 0; i < count; i++) {
-            if(strcp(accounts[i]->username, username) == 0 && strcmp(accounts->password, password) == 0) {
+            if(strcmp(accounts[i]->username, username) == 0 && strcmp(accounts->password, password) == 0) {
                 printf("\nLogin successful!!\n");
                 return;
             } else {
@@ -186,41 +186,7 @@ char report(int reprt) {
     fclose(freport);
 }
 */
-// --------------------Stock Maintaining Function HERE-------------
-/*
-int stock() {
-    
-    return 0;
-}
-*/
-// -------------------Database Function HERE---------------------
-/*
-int database() {
-    // char product[3][3][20] = {
-    //     {"Banana", "Apple", "Mango"},
-    //     {"Tomato", "Potato", "Carrot"},
-    //     {"Milk", "Yougurt", "Eggs"}
-    // };
-    // int productID[3][3] = {
-    //     {100, 102, 103},
-    //     {200, 201, 202},
-    //     {300, 301, 302}
-    // };
-    // int quantity[3][3] = {
-    //     {20, 15, 30},
-    //     {20, 40, 15},
-    //     {50, 15, 10}
-    // };
-    // int rates[3][3] = {
-    //     {80, 170, 250},
-    //     {150, 120, 70},
-    //     {220, 320, 320}
-    // };
 
-    // return 0;
-}
-*/
-/*
 // ---------------Verify length anywhere for String Input------------
 int takeNcount(int limit) {
         int count = 0;
@@ -246,16 +212,16 @@ struct Database {   // Database for User purchase
     char Name[20];
     int Qty;
     int Price;
-} D1;
+};
 
 struct Stock {  // Stock of Mart
     int ID;
     char Name[20];
     int Qty;
     int Price;
-} S1;
+};
 
 struct Report { // Reports
 
-} R1;
+};
 */
