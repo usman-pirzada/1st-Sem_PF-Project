@@ -9,11 +9,13 @@
 #define YELLOW "\033[33m"
 #define BLUE "\e[0;34m"
 #define GREEN "\e[0;32m"
-// #define usersCount 100
+// #define usersCount 100   // count signups & file storing remaining
 
-// Menu highlighting remaining
-
-struct Account;
+// Menu highlighting remaining by >> & arrow controlling
+struct Account {
+    char username[20];
+    char password[15];
+};
 // struct Database;
 // struct Stock;
 // struct Report;
@@ -29,7 +31,7 @@ int main() {
     FILE *adminFile = NULL;
     FILE *userFile = NULL;
     system(""); // To enable formatting & colors
-    printf(BOLD "\n"); // Without it, text appears very light
+    printf(BOLD); // Without it, text appears very light
 
     printf(BLUE "\n\t\tFAST Super Mart");
     printf("\n\t\t==================" WHITE);
@@ -70,20 +72,24 @@ int main() {
         switch(option) {
             case 1:
                 enter(1, "Admins.bin");   // Send 1 with "Admins.bin" for Admins' Login
+                system("CLS");
                 printf(GREEN "\n\tAdmin Login Successful!\n" WHITE);
                 menu(1);    // Admin Menu @1
                 break;
             case 2:
                 enter(1, "Users.bin");   // Send 1 with "Users.bin" filename for Users' Login
+                system("CLS");
                 printf(GREEN "\n\tUser Login Successful!\n" WHITE);
                 menu(2);    // User Menu @2
                 break; 
             case 3:
                 enter(2, "Admins.bin");   // Send 2 with "Admins.bin" for SignUp
+                system("CLS");
                 printf(GREEN "\n\tNew Admin Added Successfully!\n" WHITE);
                 break;
             case 4:
                 enter(2, "Users.bin");   // Send 2 with "Users.bin" filename for Users' SignUp
+                system("CLS");
                 printf(GREEN "\n\tNew User Added Successfully!\n" WHITE);
                 break;
 
@@ -92,6 +98,7 @@ int main() {
                 break;
 
             default:
+                system("CLS");
                 printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
                 main(); // continue;
         }
@@ -111,21 +118,22 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
     }
 
     if(log == 1) {  // 1 for login
+        FILE *fileRead = NULL;
         char username[20], password[15];
-        /***/accounts = (struct Account *) realloc(accounts, /*usersCount*/20 * sizeof(struct Account));   // correction needed
+        accounts = (struct Account *) realloc(accounts, /*usersCount*/20 * sizeof(struct Account));   // * removed from beginning
         if(accounts == NULL) {
             printf(RED "\nError Allocating Memory!!" WHITE);
             main();
         }
-        FILE *fileRead = NULL;
+        
         fileRead = fopen(filename, "rb");
         if (fileRead == NULL) {
             perror(RED "\n\tError Occured" WHITE);
             main();
         }
 
-        int count = 0;
-        while(fread(&accounts[count], sizeof(struct Account), 1, fileRead)) {  // Reading then storing users' login data to structure  // & removed
+        int count = 0;  // count used here for different indexes of the instance: accounts
+        while(fread(&accounts[count], sizeof(struct Account), 1, fileRead)) {  // Reading from file then storing users' login data to structure  // & removed
             count++;
         }
         fclose(fileRead);
@@ -139,12 +147,17 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
 
         for(int i = 0; i < count; i++) {
             if(strcmp(accounts[i].username, username) == 0 && strcmp(accounts[i].password, password) == 0) {
-                printf("\nLogin successful!!\n");
-                return;
+                // system("CLS");
+                // printf(GREEN "\nLogin successful!!\n" WHITE);
+                //free(accounts);
+                // return;
             } else {
+                system("CLS");
                 printf(RED "\n\tInvalid Username or Password!!" WHITE);
-                main();
+                //free(accounts);
+                main(); // while(attempts < 3) can be used from Input validation
             }
+            free(accounts);
         }
     
     } else if(log == 2) {   // 2 for SignUp
@@ -163,23 +176,24 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
 
         fwrite(accounts, sizeof(struct Account), 1, fileWrite);    // Write structure (signup data) to file // & removed
         fclose(fileWrite);
-        
+        free(accounts);
         // printf(GREEN "\nSignup successful!!\n" WHITE);    // prompt to be changed
-    } else {
-        printf(RED "\n\n\tAn Unexpected Error Occured!!" WHITE);
-        exit(1);
-    }
+    } //else {    // Unnecessary, just for clarification
+    //     printf(RED "\n\n\tAn Unexpected Error Occured!!" WHITE);
+    //     free(accounts);
+    //     exit(1);
+    // }
 }
 
 // -------------------Enter (Login & SignUp) Function HERE--------------------
 
-void menu(int user) {   // 1 for Admin & 2 for User
+void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
     int option;
 
-    if(user == 1) { // 1 for Admin
-        while(1) {
-            printf("\nWhat would you like to do now: \n");
-            printf("\n 1) Add New Item to Stock\n 2) View Stock Status\n 3) Generate Report\n 4) LogOut\n 5) LogOut & Exit Program");
+    if(userType == 1) { // 1 for Admin
+        while(1) {  // do{...}while(option != 5) can also be used
+            printf("\nWhat would you like to do now:\n");
+            printf("\n 1) Add New Item to Stock\n 2) View Stock Status\n 3) Generate Report\n 4) LogOut\n 5) Exit Program & LogOut\n");
             scanf("%d", &option);
             switch(option) {
                 case 1:
@@ -205,10 +219,10 @@ void menu(int user) {   // 1 for Admin & 2 for User
             }
         }
 
-    } else if(user == 2) {  // 2 for User
-        while(1) {
-            printf("\nWhat would you like to do now: \n");
-            printf("\n 1) Add Item to Card\n 2) Remove Item from Card\n 3) Place Order\n 4) LogOut\n 5) LogOut & Exit Program");
+    } else if(userType == 2) {  // 2 for User
+        while(1) {  // do{...}while(option != 5) can also be used
+            printf("\nWhat would you like to do now:\n");
+            printf("\n 1) Add Item to Card\n 2) Remove Item from Card\n 3) Place Order\n 4) LogOut\n 5) Exit Program & Logout\n");
             scanf("%d", &option);
             switch(option) {
                 case 1:
@@ -229,6 +243,7 @@ void menu(int user) {   // 1 for Admin & 2 for User
                     break;
 
                 default:
+                    system("CLS");
                     printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
             }
         }
@@ -270,10 +285,6 @@ char report(int reprt) {
 */
 
 // ----------------------------Structures HERE↓----------------------
-struct Account {
-    char username[20];
-    char password[15];
-};
 /*
 struct Database {   // Database for User purchase
     int ID;
