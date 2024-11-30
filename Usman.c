@@ -103,7 +103,7 @@ int main() {
 
 void enter(int log, const char *filename/*, int usersCount*/) {  // variable is global  // log is 1 for Login & 2 for SignUp
     struct Account *accounts = NULL;    // see for correction
-    *accounts = (struct Account *) malloc(sizeof(struct Account));  // This size is enough to store SignUp data for writing to binary file
+    accounts = (struct Account *) malloc(sizeof(struct Account));  // This size is enough to store SignUp data for writing to binary file   // Removed *accounts
     if(accounts == NULL) {
         printf(RED "\nError Allocating Memory!!" WHITE);
         main();
@@ -111,7 +111,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
 
     if(log == 1) {  // 1 for login
         char username[20], password[15];
-        /***/accounts = (struct Account *) realloc(accounts, usersCount * sizeof(struct Account));   // correction needed
+        /***/accounts = (struct Account *) realloc(accounts, /*usersCount*/20 * sizeof(struct Account));   // correction needed
         if(accounts == NULL) {
             printf(RED "\nError Allocating Memory!!" WHITE);
             main();
@@ -156,15 +156,15 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         
         // Collect signup data in structure
         printf("\nSet Your Username: ");
-        scanf("%s20", &accounts->username);
+        scanf("%19s", &accounts[0]->username); // 19 or 20? added [0]
         printf("Set Your Password (Length 8 to 20 digits): ");
-        scanf("%s15", &accounts->password);
+        scanf("%14s", &accounts[0]->password); // 14 or 15? added [0]
 
         fwrite(accounts, sizeof(struct Account), 1, fileWrite);    // Write structure (signup data) to file // & removed
         fclose(fileWrite);
         
         printf(GREEN "\nSignup successful!! Now login to your created account\n" WHITE);
-        enter(1, &filename);   // Go to login for created account
+        enter(1, filename);   // removed &  // Go to login for created account
     } else {
         printf(RED "\n\n\tAn Unexpected Error Occured!!" WHITE);
         exit(1);
