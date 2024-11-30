@@ -18,13 +18,14 @@ struct Account {
 };
 // struct Database;
 // struct Stock;
-// struct Report;
+struct Report;
 
 void enter(int, const char */*, int */);    // Enter to program by your account
 void menu(int);
 // int database();
-// char report(int);
+int report(int);
 // int stock();
+// int selectAnimate();
 
 int main() {
     int option;
@@ -157,10 +158,10 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
                 //free(accounts);
                 main(); // while(attempts < 3) can be used from Input validation
             }
-            free(accounts);
         }
-    
-    } else if(log == 2) {   // 2 for SignUp
+        free(accounts);
+    }
+    else if(log == 2) {   // 2 for SignUp
         FILE *fileWrite = NULL;
         fileWrite = fopen(filename, "ab");  // Open file to append signUp data
         if(fileWrite == NULL) {
@@ -252,37 +253,33 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
 }
 
 // -------------------Report Generate  Function HERE--------------
-/*
-char report(int reprt) {
-    FILE *freport;
+void report(int reprt) {
+    struct Report *reports = (struct Report*) calloc(1, sizeof(struct Report));
+    free(reports);
+    FILE *repRead;
+    FILE *repWrite;
 
     if(reprt == 1) {    // 1 for writing report
         freport = fopen("report.dat", "a");
         if(freport == NULL) {
             perror("\nUnable to generate report");
-            return 'N';
         }
 
         // fclose(freport);
-        return 'Y';
     } else if(reprt == 2) { // 2 for reading report
         freport = fopen("report.dat", "r");
         if (freport == NULL) {
             printf("\n\tNo Reports Found!!");
-            return 'N';
         }
         
         // fclose(freport);
-        return 'Y';
     } else {
         printf("\nUnable to Process Report!");
         ch = getch();
-        return 'N';
     }
 
     fclose(freport);
 }
-*/
 
 // ----------------------------Structures HERE↓----------------------
 /*
@@ -299,8 +296,10 @@ struct Stock {  // Stock of Mart
     int Qty;
     int Price;
 };
+*/
 
 struct Report { // Reports
-
+    unsigned int sold;
+    unsigned int inInventory;
+    unsigned int required;
 };
-*/
