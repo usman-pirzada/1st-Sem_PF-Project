@@ -51,7 +51,7 @@ float addToCart(int n, float *totalCost){
             return 0;
         }
 
-        // Reset db pointer to beginning of file to search products
+        // Reset db pointer to beginning of file to search products.
         fseek(db, 0, SEEK_SET);
         int found = 0;
         int available;
