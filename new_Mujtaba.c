@@ -67,11 +67,16 @@ float addToCart(int n, float *totalCost){
                 if(available<=0){
                     printf("\nThis item is out of stock");
                     continue;
-                }
+                }else if(available<cart[count].quantity){
+					printf("\nThere are only %d %s in the stock",available,productName);
+					continue;
+				}
                 printf("\nAdded to cart successfully!\n");
 
                 cart[count].price = price;
                 totalCost += cart[count].quantity * price;
+
+				int fquantity = available - cart[count].quantity;
 
                 // Append the item and its details to order history.txt
                 FILE *orderHistory = fopen("order_history.txt","a");
@@ -117,8 +122,8 @@ int removeFromCart(float *totalCost){
     printf("Enter the quantity to remove: ");
     scanf("%d",&removeQuantity);
    
-    FILE *orderHistory = fopen("order_history.txt", "r");
-    FILE *tempFile = fopen("temp_order_history.txt", "w");
+    FILE *orderHistory = fopen("order_history.txt","r");
+    FILE *tempFile = fopen("temp_order_history.txt","w");
     if(orderHistory == NULL || tempFile == NULL){
         printf("Error opening file\n");
         free(itemToRemove);
@@ -209,7 +214,7 @@ int main()
 				addToCart(n,&totalCost);
 				break;
 			case 2:
-				reomveFromCart(&totalCost);
+				reomveFromCart(&totalCost, fquantity);
 				break;
 			case 3:
 				printf("\nThank you for shopping. Please come again.");
