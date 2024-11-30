@@ -3,11 +3,12 @@
 #include <string.h>
 #include <errno.h>      // For perror
 #include <windows.h>    // For colors and formatting
+#define BOLD "\e[1m"
 #define WHITE "\e[0;37m"
 #define RED "\e[0;31m"
+#define YELLOW "\033[33m"
 #define BLUE "\e[0;34m"
 #define GREEN "\e[0;32m"
-#define BOLD "\e[1m"
 // #define usersCount 100
 
 // Menu highlighting remaining
@@ -27,33 +28,35 @@ int main() {
     int option;
     FILE *adminFile = NULL;
     FILE *userFile = NULL;
-    system(BOLD);   // need check syntax
+    system(""); // To enable formatting & colors
+    printf("BOLD"); // Without it, text appears very light
 
-    printf("\n\t\tFAST Super Mart");
-    printf("\n\t\t==================");
+    printf(BLUE "\n\t\tFAST Super Mart");
+    printf("\n\t\t==================" WHITE);
     adminFile = fopen("Admins.bin", "rb");
     userFile = fopen("Users.bin", "rb");
     if(adminFile == NULL && userFile == NULL) {
-        printf("\n" RED "No Account Created Yet!!" BLUE "Please Add an Account to Proceed:" WHITE "\n 1) Add Admin Account\n 2) Add User Account\n");
+        printf(RED "\nNo Account Created Yet!!");
+        printf(YELLOW "Please Add an Account to Proceed:\n 1) Add Admin Account\n 2) Add User Account\n" WHITE);
         scanf("%d", &option);
         switch(option) {
             case 1:
                 printf("\nNow SignUp below for Admin Account\n");
                 enter(2, "Admins.bin"); // Pass 2 for signup with Admins.bin file for Admin
                 system("CLS");
-                printf("\n\tAdmin Account Added Successfully!\n");
+                printf(GREEN"\n\tAdmin Account Added Successfully!\n" WHITE);
                 break;
             case 2:
                 printf("\nNow SignUp below for User Account\n");
                 enter(2, "Users.bin");  // Pass 2 for signup with Users.bin file for User
                 system("CLS");
-                printf("\n\tUser Account Added Successfully!\n");
+                printf(GREEN "\n\tUser Account Added Successfully!\n" WHITE);
                 break;
             case 3:
                 exit(0);
                 break;
             default:
-                printf("\n\tInvalid Input!! Try Again\n");
+                printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
                 main(); // repeat main
         }
         
@@ -66,21 +69,21 @@ int main() {
         switch(option) {
             case 1:
                 enter(1, "Admins.bin");   // Send 1 with "Admins.bin" for Admins' Login
-                printf("\n\tAdmin Login Successful!\n");
+                printf(GREEN "\n\tAdmin Login Successful!\n" WHITE);
                 menu(1);    // Admin Menu @1
                 break;
             case 2:
                 enter(1, "Users.bin");   // Send 1 with "Users.bin" filename for Users' Login
-                printf("\n\tUser Login Successful!\n");
+                printf(GREEN "\n\tUser Login Successful!\n" WHITE);
                 menu(2);    // User Menu @2
                 break; 
             case 3:
                 enter(2, "Admins.bin");   // Send 2 with "Admins.bin" for SignUp
-                printf("\n\tNew Admin Added Successfully!\n");
+                printf(GREEN "\n\tNew Admin Added Successfully!\n" WHITE);
                 break;
             case 4:
                 enter(2, "Users.bin");   // Send 2 with "Users.bin" filename for Users' SignUp
-                printf("\n\tNew User Added Successfully!\n");
+                printf(GREEN "\n\tNew User Added Successfully!\n" WHITE);
                 break;
 
             case 5:
@@ -88,7 +91,7 @@ int main() {
                 break;
 
             default:
-                printf("\n\tInvalid Input!! Try Again\n");
+                printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
                 main(); // continue;
         }
     }
@@ -102,7 +105,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
     struct Account *accounts = NULL;    // see for correction
     *accounts = (struct Account *) malloc(sizeof(struct Account));  // This size is enough to store SignUp data for writing to binary file
     if(accounts == NULL) {
-        printf("\nError Allocating Memory!!");
+        printf(RED "\nError Allocating Memory!!" WHITE);
         main();
     }
 
@@ -110,13 +113,13 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         char username[20], password[15];
         /***/accounts = (struct Account *) realloc(accounts, usersCount * sizeof(struct Account));   // correction needed
         if(accounts == NULL) {
-            printf("\nError Allocating Memory!!");
+            printf(RED "\nError Allocating Memory!!" WHITE);
             main();
         }
         FILE *fileRead = NULL;
         fileRead = fopen(filename, "rb");
         if (fileRead == NULL) {
-            perror("\n\tError Occured");
+            perror(RED "\n\tError Occured" WHITE);
             main();
         }
 
@@ -138,7 +141,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
                 printf("\nLogin successful!!\n");
                 return;
             } else {
-                printf("\n\tInvalid Username or Password!!");
+                printf(RED "\n\tInvalid Username or Password!!" WHITE);
                 main();
             }
         }
@@ -147,7 +150,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         FILE *fileWrite = NULL;
         fileWrite = fopen(filename, "ab");  // Open file to append signUp data
         if(fileWrite == NULL) {
-            perror("\n\tError Occured");
+            perror(RED "\n\tError Occured" WHITE);
             main();
         }
         
@@ -160,10 +163,10 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         fwrite(accounts, sizeof(struct Account), 1, fileWrite);    // Write structure (signup data) to file // & removed
         fclose(fileWrite);
         
-        printf("\nSignup successful!! Now login to your created account\n");
+        printf(GREEN "\nSignup successful!! Now login to your created account\n" WHITE);
         enter(1, &filename);   // Go to login for created account
     } else {
-        printf("\n\n\tAn Unexpected Error Occured!!");
+        printf(RED "\n\n\tAn Unexpected Error Occured!!" WHITE);
         exit(1);
     }
 }
@@ -198,7 +201,7 @@ void menu(int user) {   // 1 for Admin & 2 for User
                     break;
 
                 default:
-                    printf("\n\tInvalid Input!! Try Again\n");
+                    printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
             }
         }
 
@@ -226,7 +229,7 @@ void menu(int user) {   // 1 for Admin & 2 for User
                     break;
 
                 default:
-                    printf("\n\tInvalid Input!! Try Again\n");
+                    printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
             }
         }
 
