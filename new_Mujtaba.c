@@ -148,6 +148,7 @@ int removeFromCart(float *totalCost){
     int found = 0;
 
     while(fgets(line,100,orderHistory) != NULL){
+		
         int itemQuantity;
         float itemPrice;
 
