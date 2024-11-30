@@ -29,7 +29,7 @@ int main() {
     FILE *adminFile = NULL;
     FILE *userFile = NULL;
     system(""); // To enable formatting & colors
-    printf("BOLD"); // Without it, text appears very light
+    printf(BOLD "\n"); // Without it, text appears very light
 
     printf(BLUE "\n\t\tFAST Super Mart");
     printf("\n\t\t==================" WHITE);
@@ -37,7 +37,7 @@ int main() {
     userFile = fopen("Users.bin", "rb");
     if(adminFile == NULL && userFile == NULL) {
         printf(RED "\nNo Account Created Yet!!");
-        printf(YELLOW "Please Add an Account to Proceed:\n 1) Add Admin Account\n 2) Add User Account\n" WHITE);
+        printf(YELLOW " Please Create an Account to Proceed:\n 1) Create Admin Account\n 2) Create User Account\n" WHITE);
         scanf("%d", &option);
         switch(option) {
             case 1:
@@ -59,6 +59,7 @@ int main() {
                 printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
                 main(); // repeat main
         }
+    }
         
     fclose(adminFile); fclose(userFile);  // As the file was opened just to verify its existance
 
@@ -124,7 +125,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         }
 
         int count = 0;
-        while(fread(&accounts[count], sizeof(struct Account), 1, fileRead)) {  // Reading & storing users' login data to structure  // & removed
+        while(fread(&accounts[count], sizeof(struct Account), 1, fileRead)) {  // Reading then storing users' login data to structure  // & removed
             count++;
         }
         fclose(fileRead);
@@ -156,15 +157,14 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         
         // Collect signup data in structure
         printf("\nSet Your Username: ");
-        scanf("%19s", &accounts[0]->username); // 19 or 20? added [0]
+        scanf("%19s", &accounts[0].username); // 19 or 20? added [0]; instead of -> . used
         printf("Set Your Password (Length 8 to 20 digits): ");
-        scanf("%14s", &accounts[0]->password); // 14 or 15? added [0]
+        scanf("%14s", &accounts[0].password); // 14 or 15? added [0]; instead of -> . used
 
         fwrite(accounts, sizeof(struct Account), 1, fileWrite);    // Write structure (signup data) to file // & removed
         fclose(fileWrite);
         
-        printf(GREEN "\nSignup successful!! Now login to your created account\n" WHITE);
-        enter(1, filename);   // removed &  // Go to login for created account
+        // printf(GREEN "\nSignup successful!!\n" WHITE);    // prompt to be changed
     } else {
         printf(RED "\n\n\tAn Unexpected Error Occured!!" WHITE);
         exit(1);
