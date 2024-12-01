@@ -8,7 +8,7 @@ struct product{
 	float price;
 };
 
-float addToCart(int n, float *totalCost){
+float addToCart(int n, float totalCost){
 
 	FILE *db = fopen("products.txt", "r"); // db = database
     if(db == NULL){
@@ -32,39 +32,34 @@ float addToCart(int n, float *totalCost){
         }
 
         printf("\nEnter the name of the item (or type 'exit' to finish): ");
-        fgets(cart[count].name,sizeof(cart[count].name),stdin);
-        cart[count].name[strcspn(cart[count].name,"\n")] ='\0';
+        scanf("%s",&cart[count].name);
 
         if(strcmp(cart[count].name,"exit") == 0){
-            return;
+            break;
         }
 
         printf("Enter Quantity: ");
-        scanf("%d",&cart[count].quantity);
-
-		// A buufer variable to store and compare the name entered by user
-		char *productName = (char *)malloc(100 * sizeof(char));
-        if (productName == NULL) {
-            printf("\nMemory Allocation Failed!");
-            free(cart);
-            fclose(db);
-            return 0;
-        }
-
+        scanf(" %d",&cart[count].quantity);
+        
         // Reset db pointer to beginning of file to search products.
         fseek(db, 0, SEEK_SET);
+                
         int found = 0;
-        int available;
-        float price;
+        char productName[30];	// A buufer variable to store and compare the name entered by user
 
-        while(fgets(productName,100,db) != NULL){
-
-			productName[strcspn(productName,"\n")]='\0';
-            sscanf(productName,"%s quantity: %d price: $%f",productName,&available,&price);
-
+        while(fgets(productName,30,db)!=NULL){
+        	int available;
+        	float price;
+        	        	
+        	sscanf(productName,"%s Quantity: %d Price: $%f",productName,&available,&price);
+        	
+        	printf("\nPrice: %.2f\n",price);
+        	printf("Available: %d",available);
+        	
             if(strcmp(productName,cart[count].name) == 0){
                 found = 1;
                 if(available<=0){
+                	printf("%d",available);
                     printf("\nThis item is out of stock");
                     continue;
                 }else if(available<cart[count].quantity){
@@ -75,10 +70,11 @@ float addToCart(int n, float *totalCost){
 
                 cart[count].price = price;
                 totalCost += cart[count].quantity * price;
+                printf("\n\n%f\n",totalCost);
 
 				int fquantity = available - cart[count].quantity;
 
-                // Append the item and its details to order history.txt
+                // Append the item and its details to order_history.txt
                 FILE *orderHistory = fopen("order_history.txt","a");
                 if(orderHistory == NULL){
                     printf("\nError opening order history file");
@@ -91,7 +87,7 @@ float addToCart(int n, float *totalCost){
                 break;
             }
         }
-        if(!found){
+        if(found!=1){
             printf("\nThe item does not exist!");
         }else{
             count++;
@@ -101,25 +97,20 @@ float addToCart(int n, float *totalCost){
     free(cart);
     fclose(db);
 
-    printf("The total cost of your cart is: $%.2f\n", totalCost);
+    printf("\nThe total cost of your cart is: $%.2f\n", totalCost);
 	n = count;
 	return totalCost;
 }
 
 int removeFromCart(float *totalCost){
 	
-    char *itemToRemove=(char *)malloc(100 * sizeof(char));
-    if(itemToRemove == NULL){
-        printf("\nMemory Allocation Failed!\n");
-        return;
-    }
-
-    printf("Enter the name of the product to remove: ");
-    fgets(itemToRemove,100,stdin);
-    itemToRemove[strcspn(itemToRemove,"\n")]='\0';
-
+    char itemToRemove[30];
     int removeQuantity;
-    printf("Enter the quantity to remove: ");
+
+    printf("\nEnter the name of the item to remove: ");
+    scanf("%s",itemToRemove);
+
+    printf("\nEnter the quantity to remove: ");
     scanf("%d",&removeQuantity);
    
     FILE *orderHistory = fopen("order_history.txt","r");
@@ -127,16 +118,15 @@ int removeFromCart(float *totalCost){
     if(orderHistory == NULL || tempFile == NULL){
         printf("Error opening file\n");
         free(itemToRemove);
-        return;
+        return 1;
     }
 
 	char *productName = (char *)malloc(100 * sizeof(char));  
     if (productName == NULL) {
         printf("Memory Allocation Failed for itemName!\n");
-        free(itemToRemove);
         fclose(orderHistory);
         fclose(tempFile);
-        return;
+        return 0;
     }
 
     // buffer
@@ -147,7 +137,7 @@ int removeFromCart(float *totalCost){
 		free(productName);
         fclose(orderHistory);
         fclose(tempFile);
-        return;
+        return 0;
     }
 
     int found = 0;
@@ -157,9 +147,9 @@ int removeFromCart(float *totalCost){
         int itemQuantity;
         float itemPrice;
 
-        sscanf(line, "%s\tQuantity: %d\tPrice: %f", productName, &itemQuantity, &itemPrice);
+        sscanf(line, "%s Quantity: %d Price: %f", productName, &itemQuantity, &itemPrice);
 
-        if(strcmp(itemName,itemToRemove) == 0){
+        if(strcmp(productName,itemToRemove) == 0){
             found = 1;
             if(removeQuantity >= itemQuantity){
                 printf("\nRemoved all %s from the cart.\n",productName);
@@ -198,8 +188,8 @@ int removeFromCart(float *totalCost){
 int main()
 {
 	int choice, n=0;	// n = no.of products
-	float totalCost = 0;
-
+	float totalCost;
+	
 	do{
 		printf("Press:\n");
 		printf("1 to add to cart\n");
@@ -211,10 +201,10 @@ int main()
 		
 		switch(choice){
 			case 1:
-				addToCart(n,&totalCost);
+				totalCost = addToCart(n,0);
 				break;
 			case 2:
-				reomveFromCart(&totalCost, fquantity);
+				removeFromCart(&totalCost);
 				break;
 			case 3:
 				printf("\nThank you for shopping. Please come again.");
