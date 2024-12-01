@@ -23,7 +23,7 @@ struct Report;
 void enter(int, const char */*, int */);    // Enter to program by your account
 void menu(int);
 // int database();
-int report(int);
+int genReport(int);
 // int stock();
 // int selectAnimate();
 
@@ -180,9 +180,9 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         free(accounts);
         // printf(GREEN "\nSignup successful!!\n" WHITE);    // prompt to be changed
     } //else {    // Unnecessary, just for clarification
-    //     printf(RED "\n\n\tAn Unexpected Error Occured!!" WHITE);
-    //     free(accounts);
-    //     exit(1);
+    //   printf(RED "\n\n\tAn Unexpected Error Occured!!" WHITE);
+    //   free(accounts);
+    //   exit(1);
     // }
 }
 
@@ -194,12 +194,11 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
     if(userType == 1) { // 1 for Admin
         while(1) {  // do{...}while(option != 5) can also be used
             printf("\nWhat would you like to do now:\n");
-            printf("\n 1) Add New Item to Stock\n 2) View Stock Status\n 3) Generate Report\n 4) LogOut\n 5) Exit Program & LogOut\n");
+            printf("\n 1) Add New Item to Stock\n 2) View Stock Status\n 3) Generate Report\n 4) LogOut\n 5) Exit Program & LogOut\n"); // Remove User/Admin
             scanf("%d", &option);
             switch(option) {
                 case 1:
                     // Send control to Talal's function for Adding new item to Stock
-                    menu(1);    // Admin Menu @1
                     break;
                 case 2:
                     // Send control to Talal's function for Viewing items of Stock
@@ -299,7 +298,23 @@ struct Stock {  // Stock of Mart
 */
 
 struct Report { // Reports
-    unsigned int sold;
-    unsigned int inInventory;
-    unsigned int required;
+    unsigned int sales;
+    unsigned int stockLevel;
+    unsigned int ordersPlaced;
+    // unsigned int requied;
+    // items sort a/c to sale
 };
+
+// Rough Report fn
+
+int genReport() {
+
+    for(int i = 0; i < 1; i++) {
+        printf
+    }
+    for(int i = 0; i < totProd; i++) {
+        for(int j = 0; j < col; j++) {
+            printf
+        }
+    }
+}
