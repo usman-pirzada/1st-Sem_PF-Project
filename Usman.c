@@ -40,7 +40,7 @@ int main() {
     userFile = fopen("Users.bin", "rb");
     if(adminFile == NULL && userFile == NULL) {
         printf(RED "\nNo Account Created Yet!!");
-        printf(YELLOW " Please Create an Account to Proceed:\n 1) Create Admin Account\n 2) Create User Account\n" WHITE);
+        printf(YELLOW " Please Create an Account to Proceed:\n 1) Create Admin Account\n 2) Create User Account\n 3) Exit\n" WHITE);
         scanf("%d", &option);
         switch(option) {
             case 1:
