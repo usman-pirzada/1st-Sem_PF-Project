@@ -45,20 +45,21 @@ int main() {
         switch(option) {
             case 1:
                 printf("\nNow SignUp below for Admin Account\n");
-                enter(2, "Admins.bin"); // Pass 2 for signup with Admins.bin file for Admin
+                enter(2, "Admins.bin"); // Pass 2 in parameter for admin signup & "Admins.bin" filename
                 system("CLS");
                 printf(GREEN"\n\tAdmin Account Added Successfully!\n" WHITE);
                 break;
             case 2:
                 printf("\nNow SignUp below for User Account\n");
-                enter(2, "Users.bin");  // Pass 2 for signup with Users.bin file for User
+                enter(2, "Users.bin");  // Pass 2 in parameter for user signup & "Users.bin" filename
                 system("CLS");
                 printf(GREEN "\n\tUser Account Added Successfully!\n" WHITE);
                 break;
             case 3:
-                exit(0);
+                exit(0);    // Exit Program
                 break;
             default:
+                system("CLS");
                 printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
                 main(); // repeat main
         }
@@ -109,7 +110,6 @@ int main() {
 }
 
 // -------------------Enter (Login & SignUp) Function HERE--------------------
-
 void enter(int log, const char *filename/*, int usersCount*/) {  // variable is global  // log is 1 for Login & 2 for SignUp
     struct Account *accounts = NULL;    // see for correction
     accounts = (struct Account *) malloc(sizeof(struct Account));  // This size is enough to store SignUp data for writing to binary file   // Removed *accounts
