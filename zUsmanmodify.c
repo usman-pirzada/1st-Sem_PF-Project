@@ -305,14 +305,12 @@ struct reportData { // Reports
     // items sort a/c to sale
 } *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table
 
-// Rough Report fn
-
-void genReport(int noOfItems) {     // noOfitems remaning
+void genReport(/*int option, */int noOfItems) {     // noOfitems remaning
 	int DD, MM, YYYY;
 	FILE *reportBIN = NULL;
 	FILE *reportTXT = NULL;	// For printing data at current time, not store each structure permanently & latest figures stored in a bin
 	// if time left you should print table by double pointer
-	printf("Enter current Date (DD MM YYYY): ");	// To write date of Report generation before each report
+	printf("Enter current Date (Format: DD MM YYYY): ");	// To write date of Report generation before each report
 	scanf("%d %d %d", &DD, &MM, &YYYY);
 
 	/*
