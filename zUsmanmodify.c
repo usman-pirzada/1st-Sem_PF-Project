@@ -35,12 +35,12 @@ int main() {
     printf(BOLD); // Without it, text appears very light
 
     printf(BLUE "\n\t\tFAST Super Mart");
-    printf("\n\t\t==================" WHITE);
+    printf("\n\t\t================" WHITE);
     adminFile = fopen("Admins.bin", "rb");
     userFile = fopen("Users.bin", "rb");
     if(adminFile == NULL && userFile == NULL) {
         printf(RED "\nNo Account Created Yet!!");
-        printf(YELLOW " Please Create an Account to Proceed:\n 1) Create Admin Account\n 2) Create User Account\n" WHITE);
+        printf(YELLOW " Please Create an Account to Proceed:\n 1) Create Admin Account\n 2) Create User Account\n 3) Exit\n" WHITE);
         scanf("%d", &option);
         switch(option) {
             case 1:
@@ -252,51 +252,6 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
 }
 
 // -------------------Report Generate  Function HERE--------------
-void report(int reprt) {
-    struct Report *reports = (struct Report*) calloc(1, sizeof(struct Report));
-    free(reports);
-    FILE *repRead;
-    FILE *repWrite;
-
-    if(reprt == 1) {    // 1 for writing report
-        freport = fopen("report.dat", "a");
-        if(freport == NULL) {
-            perror("\nUnable to generate report");
-        }
-
-        // fclose(freport);
-    } else if(reprt == 2) { // 2 for reading report
-        freport = fopen("report.dat", "r");
-        if (freport == NULL) {
-            printf("\n\tNo Reports Found!!");
-        }
-        
-        // fclose(freport);
-    } else {
-        printf("\nUnable to Process Report!");
-        ch = getch();
-    }
-
-    fclose(freport);
-}
-
-// ----------------------------Structures HERE?----------------------
-/*
-struct Database {   // Database for User purchase
-    int ID;
-    char Name[20];
-    int Qty;
-    int Price;
-};
-
-struct Stock {  // Stock of Mart
-    int ID;
-    char Name[20];
-    int Qty;
-    int Price;
-};
-*/
-
 struct reportData { // Reports
 	char name[20];
     int qty;
@@ -386,7 +341,7 @@ void genReport(/*int option, */int noOfItems) {     // noOfitems remaning
     // file wali report open krwado system("cd C:\report.txt"); agr user view reports history
 }
 
-/*
+/*Not Used
 	// Display Report by 2D Pointers
     for(int i = 0; i < 1; i++) {
         printf
@@ -396,4 +351,61 @@ void genReport(/*int option, */int noOfItems) {     // noOfitems remaning
             printf
         }
     }
-    */
+*/
+
+/*Descreted fn
+void report(int reprt) {
+    struct Report *reports = (struct Report*) calloc(1, sizeof(struct Report));
+    free(reports);
+    FILE *repRead;
+    FILE *repWrite;
+
+    if(reprt == 1) {    // 1 for writing report
+        freport = fopen("report.dat", "a");
+        if(freport == NULL) {
+            perror("\nUnable to generate report");
+        }
+
+        // fclose(freport);
+    } else if(reprt == 2) { // 2 for reading report
+        freport = fopen("report.dat", "r");
+        if (freport == NULL) {
+            printf("\n\tNo Reports Found!!");
+        }
+        
+        // fclose(freport);
+    } else {
+        printf("\nUnable to Process Report!");
+        ch = getch();
+    }
+
+    fclose(freport);
+}
+*/
+
+// -----------------------Remaining Structures HERE↓----------------------
+/*
+struct Database {   // Database for User purchase
+    int ID;
+    char Name[20];
+    int Qty;
+    int Price;
+};
+
+struct Stock {  // Stock of Mart
+    int ID;
+    char Name[20];
+    int Qty;
+    int Price;
+};
+*/
+
+// Report Structure is just above reportData function
+
+/*struct Report { // Reports
+    unsigned int sales;
+    unsigned int stockLevel;
+    unsigned int ordersPlaced;
+    // unsigned int requied;
+    // items sort a/c to sale
+};*/
