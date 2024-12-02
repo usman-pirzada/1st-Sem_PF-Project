@@ -35,7 +35,7 @@ int main() {
     printf(BOLD); // Without it, text appears very light
 
     printf(BLUE "\n\t\tFAST Super Mart");
-    printf("\n\t\t==================" WHITE);
+    printf("\n\t\t================" WHITE);
     adminFile = fopen("Admins.bin", "rb");
     userFile = fopen("Users.bin", "rb");
     if(adminFile == NULL && userFile == NULL) {
