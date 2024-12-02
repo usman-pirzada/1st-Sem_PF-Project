@@ -297,72 +297,68 @@ struct Stock {  // Stock of Mart
 };
 */
 
-struct items4Report { // Reports
+struct reportData { // Reports
 	char name[20];
-    int soldQty;
+    int qty;
     float price;
-    unsigned int stockLevel;
     unsigned int ordersPlaced;
-    // unsigned int requied;
     // items sort a/c to sale
-} *sales, *stockLevel;
+} *sold, *stockRemain;  // sales: Sold Items' table & stockLevel: Stock Items Table
 
 // Rough Report fn
 
-int genReport() {
+void genReport(int noOfItems) {     // noOfitems remaning
 	int DD, MM, YYYY;
-	FILE *freport = NULL;
-	FILE *fgenReport = NULL;	// For printing data at current time, not store each structure permanently & latest figures stored in a bin
-	
-	
-	
-	
+	FILE *reportBIN = NULL;
+	FILE *reportTXT = NULL;	// For printing data at current time, not store each structure permanently & latest figures stored in a bin
+	// if time left you should print table by double pointer
 	printf("Enter current Date (DD MM YYYY): ");	// To write date of Report generation before each report
 	scanf("%d %d %d", &DD, &MM, &YYYY);
-	
+
+	/*
 	// counter return all struct values & apply calculations with previous data
-	
-	
 	//Calculations:
 	for(int i = 0; i < no; i++) {
-		sales[i].soldQty += // added to card finally;	// No. of items sold of each name
-		// Revenue generated += (sales[i].soldQty * sales[i].price;
-		// No. of items sold (total) += sales[i].soldQty;
+		sold[i].qty += // added to card finally;	// No. of items sold of each name
+		// Revenue generated += (sold[i].qty * sold[i].price;
+		// No. of items sold (total) += sold[i].qty;
 	}
-	// binary saving
-	freport = fopen("reportData.bin", "ab");
-	fwrite(freport, struct Report reports, 1, sizeof(struct Report));	// Store one latest calculated struct in the bin
-	
-	fgenReport = fopen("report.txt", "a");
-	
-    // Writing to File
-    fprintf("\n\t\tReport Generated on: %s/%s/%s", DD, MM, YYYY);
-    // ---------------SALES-------------------
+	*/
+    
+    // Storing Latest Report Data in Binary File
+	reportBIN = fopen("reportData.bin", "ab");  // apply if file unable to open
+	fwrite(reportBIN, struct Report sold, 1, sizeof(struct Report));	// Store one latest calculated struct for sold items in the bin
+	fwrite(reportBIN, struct Report stockRemain, 1, sizeof(struct Report));	// Store one latest calculated struct for sold items in the bin
+    fclose(reportBIN);  // DONE Storing in Binary
+
+    // Generating Report (Text File)
+    reportTXT = fopen("C:\\report.txt", "a");  // Chk if address work
+    fprintf("\n\t\tReport Generated on Date: %s/%s/%s", DD, MM, YYYY);
+    // ----------------* SOLD *-----------------
 	fprintf("\n\n****************** Sales ******************\n");	// remove first \n\n for file writing
 	fprintf("-------------------------------------------\n");
 	fprintf(" S.No.\tIems\tSold Qty\tPrice\n");
 	// sorting not done yet, instead only highest & lowest sales can be printed
 	for(int i = 0; i < noOfItems; i++) {
-		printf("%d\t%s %d\t$%d\n", i + 1, sales[i].name, sales[i].soldQty, sales[i].price);
+		printf("%d\t%s %d\t$%d\n", i + 1, sold[i].name, sold[i].qty, sold[i].price);
 	}
 	printf("-------------------------------------------\n");
 
-    // ---------------STOCK LEVEL-------------------
+    // --------------* REMAINING *-----------------
     printf("\n\n****************** Stock Level ******************\n");	// remove first \n\n for file writing
 	printf("-------------------------------------------\n");
 	printf(" S.No.\tIems\tRemaining Qty\tPrice\n");
 	// Sorting not done yet
 	for(int i = 0; i < noOfItems; i++) {
-		printf("%d\t%s %d\t$%d\n", i + 1, stockLevel[i].name, stockLevel[i].soldQty, stockLevel[i].price);
+		printf("%d\t%s %d\t$%d\n", i + 1, stockRemain[i].name, stockRemain[i].soldQty, stockRemain[i].price);
 	}
 	printf("-------------------------------------------\n");
-    // ---------------------------------------------------------------
+    fclose(reportTXT);  // DONE Appending in Text file
 
-	// Written in same style to file & console
-    printf(GREEN "\n\t\tReport Generated/Updated at \"C:\\report.txt\"" WHITE);
-	printf("\n\n\t\tReport Generated on: %s/%s/%s", DD, MM, YYYY);
+	// Generating Report (Terminal)
+	printf("\n\n\t\tReport Generated on Date: %s/%s/%s", DD, MM, YYYY); // add color
     // ---------------SALES-------------------
-	printf("\n\n****************** Sales ******************\n");	// remove first \n\n for file writing
+	printf("\n\n****************** Sales ******************\n");	// remove first \n\n for file writing   // add color
 	printf("-------------------------------------------\n");
 	printf(" S.No.\tIems\tSold Qty\tPrice\n");
 	// sorting not done yet, instead only highest & lowest sales can be printed
@@ -371,27 +367,21 @@ int genReport() {
 	}
 	printf("-------------------------------------------\n");
     // ---------------STOCK LEVEL-------------------
-    printf("\n\n****************** Stock Level ******************\n");	// remove first \n\n for file writing
+    printf("\n\n****************** Stock Level ******************\n");	// remove first \n\n for file writing   // add color
 	printf("-------------------------------------------\n");
 	printf(" S.No.\tIems\tRemaining Qty\tPrice\n");
 	// Sorting not done yet
 	for(int i = 0; i < noOfItems; i++) {
-		printf("%d\t%s %d\t$%d\n", i + 1, stockLevel[i].name, stockLevel[i].soldQty, stockLevel[i].price);
+		printf("%d\t%s %d\t$%d\n", i + 1, stockRemain[i].name, stockRemain[i].soldQty, stockRemain[i].price);
 	}
 	printf("-------------------------------------------\n");
-    
+    printf(GREEN "\n\n\t\tReport Generated at \"C:\\report.txt\"" WHITE);    // FINISHED Report on Terminal
 	
-	// XX-------------XX------------XX
-	
-	
-	// All data about sales report stored in structure, now append it to file
-	
-	// append current to file
-	// read all from file
-	
-	
-	
-	// Display Report
+    // file wali report open krwado system("cd C:\report.txt"); agr user view reports history
+}
+
+/*
+	// Display Report by 2D Pointers
     for(int i = 0; i < 1; i++) {
         printf
     }
@@ -400,4 +390,4 @@ int genReport() {
             printf
         }
     }
-}
+    */
