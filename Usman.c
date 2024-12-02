@@ -18,7 +18,7 @@ struct Account {
 };
 // struct Database;
 // struct Stock;
-struct Report;
+struct reportData;
 
 void enter(int, const char */*, int */);    // Enter to program by your account
 void menu(int);
