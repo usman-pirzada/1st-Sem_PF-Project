@@ -337,12 +337,23 @@ int genReport() {
 	
     // Writing to File
     fprintf("\n\t\tReport Generated on: %s/%s/%s", DD, MM, YYYY);
+    // ---------------SALES-------------------
 	fprintf("\n\n****************** Sales ******************\n");	// remove first \n\n for file writing
 	fprintf("-------------------------------------------\n");
 	fprintf(" S.No.\tIems\tSold Qty\tPrice\n");
 	// sorting not done yet, instead only highest & lowest sales can be printed
 	for(int i = 0; i < noOfItems; i++) {
 		printf("%d\t%s %d\t$%d\n", i + 1, sales[i].name, sales[i].soldQty, sales[i].price);
+	}
+	printf("-------------------------------------------\n");
+
+    // ---------------STOCK LEVEL-------------------
+    printf("\n\n****************** Stock Level ******************\n");	// remove first \n\n for file writing
+	printf("-------------------------------------------\n");
+	printf(" S.No.\tIems\tRemaining Qty\tPrice\n");
+	// Sorting not done yet
+	for(int i = 0; i < noOfItems; i++) {
+		printf("%d\t%s %d\t$%d\n", i + 1, stockLevel[i].name, stockLevel[i].soldQty, stockLevel[i].price);
 	}
 	printf("-------------------------------------------\n");
     // ---------------------------------------------------------------
