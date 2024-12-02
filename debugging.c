@@ -16,6 +16,13 @@ struct Account {
     char username[20];
     char password[15];
 };
+
+struct product {
+    int ID;
+    char name[30];
+    int quantity;
+    float price;
+};
 // struct Database;
 // struct Stock;
 struct Report;
@@ -258,72 +265,72 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
 }
 
 // -------------------Report Generate  Function HERE--------------
-void report(int reprt) {
-    struct Report *reports = (struct Report*) calloc(1, sizeof(struct Report));
-    free(reports);
-    FILE *repRead;
-    FILE *repWrite;
-
-    if(reprt == 1) {    // 1 for writing report
-        freport = fopen("report.dat", "a");
-        if(freport == NULL) {
-            perror("\nUnable to generate report");
-        }
-
-        // fclose(freport);
-    } else if(reprt == 2) { // 2 for reading report
-        freport = fopen("report.dat", "r");
-        if (freport == NULL) {
-            printf("\n\tNo Reports Found!!");
-        }
-        
-        // fclose(freport);
-    } else {
-        printf("\nUnable to Process Report!");
-        ch = getch();
-    }
-
-    fclose(freport);
-}
-
-// ----------------------------Structures HERE↓----------------------
-/*
-struct Database {   // Database for User purchase
-    int ID;
-    char Name[20];
-    int Qty;
-    int Price;
-};
-
-struct Stock {  // Stock of Mart
-    int ID;
-    char Name[20];
-    int Qty;
-    int Price;
-};
-*/
-
-struct Report { // Reports
-    unsigned int sales;
-    unsigned int stockLevel;
-    unsigned int ordersPlaced;
-    // unsigned int requied;
-    // items sort a/c to sale
-};
-
-// Rough Report fn
-
-int genReport() {
-
-    for(int i = 0; i < 1; i++) {
-        printf
-    }
-    for(int i = 0; i < totProd; i++) {
-        for(int j = 0; j < col; j++) {
-            printf
-        }
-    }
-}
+//void report(int reprt) {
+//    struct Report *reports = (struct Report*) calloc(1, sizeof(struct Report));
+//    free(reports);
+//    FILE *repRead;
+//    FILE *repWrite;
+//
+//    if(reprt == 1) {    // 1 for writing report
+//        freport = fopen("report.dat", "a");
+//        if(freport == NULL) {
+//            perror("\nUnable to generate report");
+//        }
+//
+//        // fclose(freport);
+//    } else if(reprt == 2) { // 2 for reading report
+//        freport = fopen("report.dat", "r");
+//        if (freport == NULL) {
+//            printf("\n\tNo Reports Found!!");
+//        }
+//        
+//        // fclose(freport);
+//    } else {
+//        printf("\nUnable to Process Report!");
+//        ch = getch();
+//    }
+//
+//    fclose(freport);
+//}
+//
+//// ----------------------------Structures HERE?----------------------
+///*
+//struct Database {   // Database for User purchase
+//    int ID;
+//    char Name[20];
+//    int Qty;
+//    int Price;
+//};
+//
+//struct Stock {  // Stock of Mart
+//    int ID;
+//    char Name[20];
+//    int Qty;
+//    int Price;
+//};
+//*/
+//
+//struct Report { // Reports
+//    unsigned int sales;
+//    unsigned int stockLevel;
+//    unsigned int ordersPlaced;
+//    // unsigned int requied;
+//    // items sort a/c to sale
+//};
+//
+//// Rough Report fn
+//
+//int genReport() {
+//
+//    for(int i = 0; i < 1; i++) {
+//        printf
+//    }
+//    for(int i = 0; i < totProd; i++) {
+//        for(int j = 0; j < col; j++) {
+//            printf
+//        }
+//    }
+//}
 
 void addInventory() {                                         // add inventory
     FILE *file = fopen("inventory.txt", "a");
@@ -442,7 +449,7 @@ void viewInventory() {                                // view inventory
     fclose(file);
 }
 
-float addToCart(int n, float totalCost){                            // add to cart
+void addToCart(int n, float totalCost){                            // add to cart
 
 	FILE *db = fopen("products.txt", "r"); // db = database
     if(db == NULL){
@@ -462,7 +469,7 @@ float addToCart(int n, float totalCost){                            // add to ca
         if(cart == NULL){
             printf("Memory Allocation Failed!\n");
             fclose(db);
-            return 0;
+            return;
         }
 
         printf("\nEnter the name of the item (or type 'exit' to finish): ");
@@ -514,7 +521,7 @@ float addToCart(int n, float totalCost){                            // add to ca
                     printf("\nError opening order history file");
                     free(cart);
                     fclose(db);
-                    return 0;
+                    return;
                 }
                 fprintf(orderHistory, "%s\tQuantity: %d\tPrice: $%.2f\n", cart[count].name, cart[count].quantity, price);
                 fclose(orderHistory);
@@ -533,7 +540,7 @@ float addToCart(int n, float totalCost){                            // add to ca
 
     printf("\nThe total cost of your cart is: $%.2f\n", totalCost);
 	n = count;
-	return totalCost;
+	return;
 }
 
 int removeFromCart(float *totalCost){                           // remove from cart
