@@ -326,7 +326,7 @@ int genReport() {
 	//Calculations:
 	for(int i = 0; i < no; i++) {
 		sales[i].soldQty += // added to card finally;	// No. of items sold of each name
-		// Revenue generated += (sales[i].soldQty * sales[i].pri
+		// Revenue generated += (sales[i].soldQty * sales[i].price;
 		// No. of items sold (total) += sales[i].soldQty;
 	}
 	// binary saving
@@ -335,8 +335,22 @@ int genReport() {
 	
 	fgenReport = fopen("report.txt", "a");
 	
-	// Write in same style to file & console
-	printf("\n\n\t\tReport Generated on %s / %s /%s", DD, MM, YYYY);
+    // Writing to File
+    fprintf("\n\t\tReport Generated on: %s/%s/%s", DD, MM, YYYY);
+	fprintf("\n\n****************** Sales ******************\n");	// remove first \n\n for file writing
+	fprintf("-------------------------------------------\n");
+	fprintf(" S.No.\tIems\tSold Qty\tPrice\n");
+	// sorting not done yet, instead only highest & lowest sales can be printed
+	for(int i = 0; i < noOfItems; i++) {
+		printf("%d\t%s %d\t$%d\n", i + 1, sales[i].name, sales[i].soldQty, sales[i].price);
+	}
+	printf("-------------------------------------------\n");
+    // ---------------------------------------------------------------
+
+	// Written in same style to file & console
+    printf(GREEN "\n\t\tReport Generated/Updated at \"C:\\report.txt\"" WHITE);
+	printf("\n\n\t\tReport Generated on: %s/%s/%s", DD, MM, YYYY);
+    // ---------------SALES-------------------
 	printf("\n\n****************** Sales ******************\n");	// remove first \n\n for file writing
 	printf("-------------------------------------------\n");
 	printf(" S.No.\tIems\tSold Qty\tPrice\n");
@@ -345,9 +359,8 @@ int genReport() {
 		printf("%d\t%s %d\t$%d\n", i + 1, sales[i].name, sales[i].soldQty, sales[i].price);
 	}
 	printf("-------------------------------------------\n");
-	
-	// XX-------------XX------------XX
-	printf("\n\n****************** Stock Level ******************\n");	// remove first \n\n for file writing
+    // ---------------STOCK LEVEL-------------------
+    printf("\n\n****************** Stock Level ******************\n");	// remove first \n\n for file writing
 	printf("-------------------------------------------\n");
 	printf(" S.No.\tIems\tRemaining Qty\tPrice\n");
 	// Sorting not done yet
@@ -355,6 +368,10 @@ int genReport() {
 		printf("%d\t%s %d\t$%d\n", i + 1, stockLevel[i].name, stockLevel[i].soldQty, stockLevel[i].price);
 	}
 	printf("-------------------------------------------\n");
+    
+	
+	// XX-------------XX------------XX
+	
 	
 	// All data about sales report stored in structure, now append it to file
 	
