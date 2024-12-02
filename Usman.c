@@ -10,6 +10,8 @@
 #define BLUE "\e[0;34m"
 #define GREEN "\e[0;32m"
 // #define usersCount 100   // count signups & file storing remaining
+// add pause fn in invalid prompt
+int accountsCount; // Max no. of that can be added // chk for no. of admins // default value is one but will cause issues when prog run again
 
 // Menu highlighting remaining by >> & arrow controlling
 struct Account {
@@ -28,19 +30,20 @@ int genReport(int);
 // int selectAnimate();
 
 int main() {
-    int option;
+    int option, noOfAccounts;
     FILE *adminFile = NULL;
     FILE *userFile = NULL;
     system(""); // To enable formatting & colors
     printf(BOLD); // Without it, text appears very light
 
-    printf(BLUE "\n\t\tMujtaba Super Mart");
-    printf("\n\t\t================" WHITE);
+    printf(BLUE "\n\t\t\tMujtaba Super Mart");
+    printf("\n\t\t\t================" WHITE);
     adminFile = fopen("Admins.bin", "rb");
     userFile = fopen("Users.bin", "rb");
     if(adminFile == NULL && userFile == NULL) {
-        printf(RED "\nNo Account Created Yet!!");
-        printf(YELLOW " Please Create an Account to Proceed:\n 1) Create Admin Account\n 2) Create User Account\n 3) Exit\n" WHITE);
+        accountsCount = 2;  // chk it see if need to write on file chk for each new run // may be not needed as it execute only for 1st run
+        printf(RED "\n\n\t\tWELCOME to Your First Run!\n\n"); // change color
+        printf(YELLOW " Please Create an Account to Proceed (Enter an appropriate number to select the option):\n 1) Create Admin Account\n 2) Create User Account\n 3) Exit\n" WHITE);
         scanf("%d", &option);
         switch(option) {
             case 1:
@@ -48,6 +51,15 @@ int main() {
                 enter(2, "Admins.bin"); // Pass 2 in parameter for admin signup & "Admins.bin" filename
                 system("CLS");
                 printf(GREEN"\n\tAdmin Account Added Successfully!\n" WHITE);
+                printf("\n How Many Maximum Number of Accounts Do You Want In Your System (You can change it later):"); // logic incomplete // see last comment
+                scanf("%d", &noOfAccounts);
+                if(noOfAccounts > 0 && noOfAccounts < 1000) {
+                    accountsCount = noOfAccounts + 1;   // noOfUsers + Admin (first one)
+                    printf(GREEN "\n\tOperation Successful!!\n" WHITE); // new added logic
+                } else {
+                    printf(RED "\n\tNumber of Users must be between 1 to 1000!!\n" WHITE);
+                    continue;
+                }
                 break;
             case 2:
                 printf("\nNow SignUp below for User Account\n");
@@ -146,7 +158,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         scanf("%14s", &password);   // see 14 or 15
         // validate here length of username & password
 
-        for(int i = 0; i < count; i++) {
+        for(int i = 0; i < 20; i++) {   // accountsCount needed but if condition apply must
             if(strcmp(accounts[i].username, username) == 0 && strcmp(accounts[i].password, password) == 0) {
                 // system("CLS");
                 // printf(GREEN "\nLogin successful!!\n" WHITE);
@@ -258,7 +270,7 @@ struct reportData { // Reports
     float price;
     unsigned int ordersPlaced;
     // items sort a/c to sale
-} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table
+} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
 
 void genReport(/*int option, */int noOfItems) {     // noOfitems remaning
 	int DD, MM, YYYY;
@@ -409,3 +421,18 @@ struct Stock {  // Stock of Mart
     // unsigned int requied;
     // items sort a/c to sale
 };*/
+
+
+/*
+// no.of users setting logic to be added in admin options
+
+// ----* Saving & Assigning Default Max Users *-----
+        FILE *fmaxUsers = NULL;
+        fmaxUsers = fopen("maxUsers.bin", "w"); // is for not open
+        fwrite(fmaxUsers, "2");
+        fclose(fmaxUsers);
+
+// similar for reading.....
+
+// not applied if condition for limit user "accountsCount" to enter() function
+*/
