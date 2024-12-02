@@ -8,7 +8,7 @@ struct product{
 	float price;
 };
 
-float addToCart(int n, float totalCost){
+void addToCart(int n, float *totalCost){
 
 	FILE *db = fopen("products.txt", "r"); // db = database
     if(db == NULL){
@@ -99,7 +99,6 @@ float addToCart(int n, float totalCost){
 
     printf("\nThe total cost of your cart is: $%.2f\n", totalCost);
 	n = count;
-	return totalCost;
 }
 
 int removeFromCart(float *totalCost){
@@ -188,10 +187,10 @@ int removeFromCart(float *totalCost){
 int main()
 {
 	int choice, n=0;	// n = no.of products
-	float totalCost;
+	float totalCost=0;
 	
 	do{
-		printf("Press:\n");
+		printf("Enter:\n");
 		printf("1 to add to cart\n");
 		printf("2 to remove from cart\n");
 		printf("3 to exit\n");
@@ -201,7 +200,7 @@ int main()
 		
 		switch(choice){
 			case 1:
-				totalCost = addToCart(n,0);
+				totalCost = addToCart(n,&totalCost);
 				break;
 			case 2:
 				removeFromCart(&totalCost);
