@@ -23,13 +23,16 @@ struct product {
     int quantity;
     float price;
 };
-
+// struct Database;
+// struct Stock;
 struct Report;
 
-void enter(int, const char *);    // Enter to program by your account
+void enter(int, const char */*, int */);    // Enter to program by your account
 void menu(int);
 // int database();
 int genReport(int);
+// int stock();
+// int selectAnimate();
 void addInventory();
 void removeInventory();
 void viewInventory();
