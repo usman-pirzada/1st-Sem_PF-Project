@@ -303,7 +303,7 @@ struct reportData { // Reports
     float price;
     unsigned int ordersPlaced;
     // items sort a/c to sale
-} *sold, *stockRemain;  // sales: Sold Items' table & stockLevel: Stock Items Table
+} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table
 
 // Rough Report fn
 
@@ -327,12 +327,20 @@ void genReport(int noOfItems) {     // noOfitems remaning
     
     // Storing Latest Report Data in Binary File
 	reportBIN = fopen("reportData.bin", "ab");  // apply if file unable to open
+    if(fileWrite == NULL) {
+        perror(RED "\n\tError Processing Binary File" WHITE);
+        return;
+    }
 	fwrite(reportBIN, struct Report sold, 1, sizeof(struct Report));	// Store one latest calculated struct for sold items in the bin
 	fwrite(reportBIN, struct Report stockRemain, 1, sizeof(struct Report));	// Store one latest calculated struct for sold items in the bin
     fclose(reportBIN);  // DONE Storing in Binary
 
     // Generating Report (Text File)
     reportTXT = fopen("C:\\report.txt", "a");  // Chk if address work
+    if(fileWrite == NULL) {
+        perror(RED "\n\tError Processing Text File" WHITE);
+        return;
+    }
     fprintf("\n\t\tReport Generated on Date: %s/%s/%s", DD, MM, YYYY);
     // ----------------* SOLD *-----------------
 	fprintf("\n\n****************** Sales ******************\n");	// remove first \n\n for file writing
