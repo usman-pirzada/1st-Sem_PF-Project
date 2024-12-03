@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>      // For perror
+#include <errno.h>      // For perror fn
 #include <windows.h>    // For colors and formatting
 #define BOLD "\e[1m"
 #define WHITE "\e[0;37m"
