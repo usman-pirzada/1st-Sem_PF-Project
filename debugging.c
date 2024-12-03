@@ -30,7 +30,7 @@ struct reportData { // Reports
     float price;
     unsigned int ordersPlaced;
     // items sort a/c to sale
-} sold, stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top // es ka pointer bana kr phir dma kr lena
+} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top // es ka pointer bana kr phir dma kr lena
 
 void enter(int, const char *);    // Enter to program by your account
 void menu(int);
@@ -577,6 +577,9 @@ void removeFromCart(float *totalCost){                           // remove from 
 
 void genReport(/*int option, *//*int noOfItems or nP*/) {     // noOfitems remaning
 	int DD, MM, YYYY;
+	struct reportData *sold = malloc(3 * sizeof(struct reportData));
+    struct reportData *stockRemain = malloc(3 * sizeof(struct reportData));
+    
 	FILE *reportBIN = NULL;
 	FILE *reportTXT = NULL;	// For printing data at current time, not store each structure permanently & latest figures stored in a bin
 	// if time left you should print table by double pointer
