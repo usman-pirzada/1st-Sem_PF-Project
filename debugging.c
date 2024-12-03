@@ -208,7 +208,7 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
     if(userType == 1) { // 1 for Admin
         while(1) {  // do{...}while(option != 5) can also be used
             printf("\nWhat would you like to do now:\n");
-            printf("\n 1) Add New Item to Stock\n 2) View Stock Status\n 3) Generate Report\n 4) LogOut\n 5) Exit Program & LogOut\n"); // Remove User/Admin
+            printf("\n 1) Add New Item to Inventory\n 2) Remove an Item from Inventory\n 3) View Inventory\n 4) LogOut\n 5) Exit Program\n"); // Remove User/Admin	//3) Generate Report\n 4) LogOut\n 5) Exit Program & LogOut
             scanf("%d", &option);
             switch(option) {
                 case 1:
@@ -216,20 +216,16 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
                     // Send control to Talal's function for Adding new item to Stock
                     break;
                 case 2:
-                	viewInventory();
-//                	removeInventory();
-                    // Send control to Talal's function for Viewing items of Stock
+                	removeInventory();
                     break; 
                 case 3:
-                    // Send control to my function for generating report
+                	viewInventory();
                     break;
                 case 4:
                     return;     // Back to main as the user want to LogOut
-                    break;
 
                 case 5:
                     exit(0);    // Exit Program
-                    break;
 
                 default:
                     printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
@@ -241,28 +237,23 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
         	int choice, nP=0;	// n = no.of products
 			float totalCost=0;
             printf("\nWhat would you like to do now:\n");
-            printf("\n 1) Add Item to Card\n 2) Remove Item from Card\n 3) Place Order\n 4) LogOut\n 5) Exit Program & Logout\n");
+            printf("\n 1) Add Item to Card\n 2) Remove Item from Card\n 3) Place Order\n 4) LogOut\n 5) Exit Program\n");
             scanf("%d", &option);
             switch(option) {
                 case 1:
                 	addToCart(nP, totalCost);
-                    // Send control to Mujtaba's function for Adding items to Card
                     break;
                 case 2:
                 	removeFromCart(totalCost);
-                    // Send control to Mujtaba's function for Removing items from Card
                     break; 
                 case 3: //exit & auto place order
                 	printf("\nThank you for shopping. Please come again.");
-                    // Send control to Mujtaba's function to Place Order & generate receipt
-                    break;
-//                case 4:
-//                    return;     // Back to main as the user want to LogOut
-//                    break;
-//
-//                case 5:
-//                    exit(0);    // Exit Program
-//                    break;
+                	// should now start this function from beginning
+                case 4:
+                	return;	// return to login menu
+                	
+            	case 5:
+            		exit(0);
 
                 default:
                     system("CLS");
@@ -272,74 +263,6 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
 
     }
 }
-
-// -------------------Report Generate  Function HERE--------------
-//void report(int reprt) {
-//    struct Report *reports = (struct Report*) calloc(1, sizeof(struct Report));
-//    free(reports);
-//    FILE *repRead;
-//    FILE *repWrite;
-//
-//    if(reprt == 1) {    // 1 for writing report
-//        freport = fopen("report.dat", "a");
-//        if(freport == NULL) {
-//            perror("\nUnable to generate report");
-//        }
-//
-//        // fclose(freport);
-//    } else if(reprt == 2) { // 2 for reading report
-//        freport = fopen("report.dat", "r");
-//        if (freport == NULL) {
-//            printf("\n\tNo Reports Found!!");
-//        }
-//        
-//        // fclose(freport);
-//    } else {
-//        printf("\nUnable to Process Report!");
-//        ch = getch();
-//    }
-//
-//    fclose(freport);
-//}
-//
-//// ----------------------------Structures HERE?----------------------
-///*
-//struct Database {   // Database for User purchase
-//    int ID;
-//    char Name[20];
-//    int Qty;
-//    int Price;
-//};
-//
-//struct Stock {  // Stock of Mart
-//    int ID;
-//    char Name[20];
-//    int Qty;
-//    int Price;
-//};
-//*/
-//
-//struct Report { // Reports
-//    unsigned int sales;
-//    unsigned int stockLevel;
-//    unsigned int ordersPlaced;
-//    // unsigned int requied;
-//    // items sort a/c to sale
-//};
-//
-//// Rough Report fn
-//
-//int genReport() {
-//
-//    for(int i = 0; i < 1; i++) {
-//        printf
-//    }
-//    for(int i = 0; i < totProd; i++) {
-//        for(int j = 0; j < col; j++) {
-//            printf
-//        }
-//    }
-//}
 
 void addInventory() {                                         // add inventory
     FILE *file = fopen("inventory.txt", "a");
@@ -401,7 +324,7 @@ void addInventory() {                                         // add inventory
     fclose(file);
 }
 
-void removeInventory() {                                          //remove inventory
+void removeInventory() {      //remove inventory
     int id;
     printf("Enter product ID to remove: ");
     scanf("%d", &id);
@@ -442,21 +365,6 @@ void removeInventory() {                                          //remove inven
     }
 }
 
-//void viewInventory() {                                // view inventory
-//    FILE *file = fopen("inventory.txt", "r");
-//    if (!file) {
-//        printf("Error opening inventory.\n");
-//        return;
-//    }
-//
-//    struct product prod;
-//    printf("\nProduct Inventory:\n");
-//    while (fscanf(file, "%d %s %d %f", &prod.ID, prod.name, &prod.quantity, &prod.price) != EOF) {
-//        printf("%d %s - Quantity: %d - Price: %.2f\n", prod.ID, prod.name, prod.quantity, prod.price);
-//    }
-//
-//    fclose(file);
-//}
 void viewInventory() {
     FILE *file = fopen("inventory.txt", "r");
     if (!file) {
