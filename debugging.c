@@ -34,7 +34,7 @@ void addInventory();
 void removeInventory();
 void viewInventory();
 void addToCart(int n, float totalCost);
-int removeFromCart(float *totalCost);
+// int removeFromCart(float *totalCost);
 
 
 int main() {
@@ -151,19 +151,23 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
 
         // Input & Validation Below
         printf("\nEnter Your Username: ");
-        scanf("%19s", &username);   // see correction 19 or 20
+        scanf("%19s", username);   // see correction 19 or 20
         printf("Enter Your Password: ");
-        scanf("%14s", &password);   // see 14 or 15
+        scanf("%14s", password);   // see 14 or 15
         // validate here length of username & password
 
         for(int i = 0; i < count; i++) {
+        	printf("%s\n",accounts[i].password);
+        	printf("%s\n",password);
+        	printf("%s\n",username);
+        	printf("%s\n",accounts[i].username);
             if(strcmp(accounts[i].username, username) == 0 && strcmp(accounts[i].password, password) == 0) {
-                // system("CLS");
-                // printf(GREEN "\nLogin successful!!\n" WHITE);
-                //free(accounts);
-                // return;
+//                 system("CLS");
+//                 printf(GREEN "\nLogin successful!!\n" WHITE);
+//                free(accounts);
+                 return;
             } else {
-                system("CLS");
+                //system("CLS");
                 printf(RED "\n\tInvalid Username or Password!!" WHITE);
                 //free(accounts);
                 main(); // while(attempts < 3) can be used from Input validation
@@ -208,9 +212,12 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
             scanf("%d", &option);
             switch(option) {
                 case 1:
+                	addInventory();
                     // Send control to Talal's function for Adding new item to Stock
                     break;
                 case 2:
+                	viewInventory();
+//                	removeInventory();
                     // Send control to Talal's function for Viewing items of Stock
                     break; 
                 case 3:
@@ -231,26 +238,31 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
 
     } else if(userType == 2) {  // 2 for User
         while(1) {  // do{...}while(option != 5) can also be used
+        	int choice, nP=0;	// n = no.of products
+			float totalCost=0;
             printf("\nWhat would you like to do now:\n");
             printf("\n 1) Add Item to Card\n 2) Remove Item from Card\n 3) Place Order\n 4) LogOut\n 5) Exit Program & Logout\n");
             scanf("%d", &option);
             switch(option) {
                 case 1:
+                	addToCart(nP, totalCost);
                     // Send control to Mujtaba's function for Adding items to Card
                     break;
                 case 2:
+                	removeFromCart(totalCost);
                     // Send control to Mujtaba's function for Removing items from Card
                     break; 
-                case 3:
+                case 3: //exit & auto place order
+                	printf("\nThank you for shopping. Please come again.");
                     // Send control to Mujtaba's function to Place Order & generate receipt
                     break;
-                case 4:
-                    return;     // Back to main as the user want to LogOut
-                    break;
-
-                case 5:
-                    exit(0);    // Exit Program
-                    break;
+//                case 4:
+//                    return;     // Back to main as the user want to LogOut
+//                    break;
+//
+//                case 5:
+//                    exit(0);    // Exit Program
+//                    break;
 
                 default:
                     system("CLS");
@@ -430,7 +442,22 @@ void removeInventory() {                                          //remove inven
     }
 }
 
-void viewInventory() {                                // view inventory
+//void viewInventory() {                                // view inventory
+//    FILE *file = fopen("inventory.txt", "r");
+//    if (!file) {
+//        printf("Error opening inventory.\n");
+//        return;
+//    }
+//
+//    struct product prod;
+//    printf("\nProduct Inventory:\n");
+//    while (fscanf(file, "%d %s %d %f", &prod.ID, prod.name, &prod.quantity, &prod.price) != EOF) {
+//        printf("%d %s - Quantity: %d - Price: %.2f\n", prod.ID, prod.name, prod.quantity, prod.price);
+//    }
+//
+//    fclose(file);
+//}
+void viewInventory() {
     FILE *file = fopen("inventory.txt", "r");
     if (!file) {
         printf("Error opening inventory.\n");
@@ -438,13 +465,22 @@ void viewInventory() {                                // view inventory
     }
 
     struct product prod;
+    char line[100];  // Buffer to read a line
+
     printf("\nProduct Inventory:\n");
-    while (fscanf(file, "%d %s %d %f", &prod.ID, prod.name, &prod.quantity, &prod.price) != EOF) {
-        printf("%d %s - Quantity: %d - Price: %.2f\n", prod.ID, prod.name, prod.quantity, prod.price);
+    while (fgets(line, sizeof(line), file)) {
+        // Parse the line into the struct fields
+        if (sscanf(line, "%d %s %d %f", &prod.ID, prod.name, &prod.quantity, &prod.price) == 4) {
+            printf("ID: %d | Name: %s | Quantity: %d | Price: $%.2f\n",
+                   prod.ID, prod.name, prod.quantity, prod.price);
+        } else {
+            printf("Error parsing line: %s", line);  // Debugging in case of invalid line
+        }
     }
 
     fclose(file);
 }
+
 
 void addToCart(int n, float totalCost){                            // add to cart
 
