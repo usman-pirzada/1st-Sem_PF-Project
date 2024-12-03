@@ -24,11 +24,17 @@ struct product {
     float price;
 };
 
-struct Report;
+struct reportData { // Reports
+	char name[20];
+    int qty;
+    float price;
+    unsigned int ordersPlaced;
+    // items sort a/c to sale
+} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
 
 void enter(int, const char *);    // Enter to program by your account
 void menu(int);
-int genReport(int);
+void genReport(/*int*/);
 void addInventory();
 void removeInventory();
 void viewInventory();
@@ -239,7 +245,7 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
                 	addToCart(nP, totalCost);
                     break;
                 case 2:
-                	removeFromCart(totalCost);
+                	removeFromCart(&totalCost);
                     break; 
                 case 3: //exit & auto place order
                 	printf("\nThank you for shopping. Please come again.");
@@ -559,22 +565,15 @@ void removeFromCart(float *totalCost){                           // remove from 
 }
 
 // -------------------Report Generate  Function HERE--------------
-struct reportData { // Reports
-	char name[20];
-    int qty;
-    float price;
-    unsigned int ordersPlaced;
-    // items sort a/c to sale
-} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
+//struct reportData { // Reports
+//	char name[20];
+//    int qty;
+//    float price;
+//    unsigned int ordersPlaced;
+//    // items sort a/c to sale
+//} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
 
 // -------------------Report Generate  Function HERE--------------
-struct reportData { // Reports
-	char name[20];
-    int qty;
-    float price;
-    unsigned int ordersPlaced;
-    // items sort a/c to sale
-} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
 
 void genReport(/*int option, *//*int noOfItems or nP*/) {     // noOfitems remaning
 	int DD, MM, YYYY;
@@ -596,27 +595,27 @@ void genReport(/*int option, *//*int noOfItems or nP*/) {     // noOfitems reman
     
     // Storing Latest Report Data in Binary File
 	reportBIN = fopen("reportData.bin", "ab");  // apply if file unable to open
-    if(fileWrite == NULL) {
+    if(reportBIN == NULL) {
         perror(RED "\n\tError Processing Binary File" WHITE);
         return;
     }
-	fwrite(reportBIN, struct Report sold, 1, sizeof(struct Report));	// Store one latest calculated struct for sold items in the bin
-	fwrite(reportBIN, struct Report stockRemain, 1, sizeof(struct Report));	// Store one latest calculated struct for sold items in the bin
+	fwrite(sold, sizeof(struct reportData), 1, reportBIN);	// Store one latest calculated struct for sold items in the bin
+	fwrite(stockRemain, sizeof(struct reportData), 1, reportBIN);	// Store one latest calculated struct for sold items in the bin
     fclose(reportBIN);  // DONE Storing in Binary
 
     // Generating Report (Text File)
     reportTXT = fopen("C:\\report.txt", "a");  // Chk if address work
-    if(fileWrite == NULL) {
+    if(reportTXT == NULL) {
         perror(RED "\n\tError Processing Text File" WHITE);
         return;
     }
-    fprintf("\n\t\tReport Generated on Date: %s/%s/%s", DD, MM, YYYY);
+    fprintf(reportTXT, "\n\t\tReport Generated on Date: %s/%s/%s", DD, MM, YYYY);
     // ----------------* SOLD *-----------------
-	fprintf("\n\n****************** Sales ******************\n");	// remove first \n\n for file writing
-	fprintf("-------------------------------------------\n");
-	fprintf(" S.No.\tIems\tSold Qty\tPrice\n");
+	fprintf(reportTXT, "\n\n****************** Sales ******************\n");	// remove first \n\n for file writing
+	fprintf(reportTXT, "-------------------------------------------\n");
+	fprintf(reportTXT, " S.No.\tIems\tSold Qty\tPrice\n");
 	// sorting not done yet, instead only highest & lowest sales can be printed
-	for(int i = 0; i < noOfItems; i++) {
+	for(int i = 0; i < 3/*noOfItems or nP*/; i++) {
 		printf("%d\t%s %d\t$%d\n", i + 1, sold[i].name, sold[i].qty, sold[i].price);
 	}
 	printf("-------------------------------------------\n");
@@ -626,8 +625,8 @@ void genReport(/*int option, *//*int noOfItems or nP*/) {     // noOfitems reman
 	printf("-------------------------------------------\n");
 	printf(" S.No.\tIems\tRemaining Qty\tPrice\n");
 	// Sorting not done yet
-	for(int i = 0; i < noOfItems; i++) {
-		printf("%d\t%s %d\t$%d\n", i + 1, stockRemain[i].name, stockRemain[i].soldQty, stockRemain[i].price);
+	for(int i = 0; i < 3/*noOfItems*/; i++) {
+		printf("%d\t%s %d\t$%d\n", i + 1, stockRemain[i].name, stockRemain[i].qty, stockRemain[i].price);
 	}
 	printf("-------------------------------------------\n");
     fclose(reportTXT);  // DONE Appending in Text file
@@ -639,8 +638,8 @@ void genReport(/*int option, *//*int noOfItems or nP*/) {     // noOfitems reman
 	printf("-------------------------------------------\n");
 	printf(" S.No.\tIems\tSold Qty\tPrice\n");
 	// sorting not done yet, instead only highest & lowest sales can be printed
-	for(int i = 0; i < noOfItems; i++) {
-		printf("%d\t%s %d\t$%d\n", i + 1, sales[i].name, sales[i].soldQty, sales[i].price);
+	for(int i = 0; i < 3/*noOfItems*/; i++) {
+		printf("%d\t%s %d\t$%d\n", i + 1, sold[i].name, sold[i].qty, sold[i].price);
 	}
 	printf("-------------------------------------------\n");
     // ---------------STOCK LEVEL-------------------
@@ -648,8 +647,8 @@ void genReport(/*int option, *//*int noOfItems or nP*/) {     // noOfitems reman
 	printf("-------------------------------------------\n");
 	printf(" S.No.\tIems\tRemaining Qty\tPrice\n");
 	// Sorting not done yet
-	for(int i = 0; i < noOfItems; i++) {
-		printf("%d\t%s %d\t$%d\n", i + 1, stockRemain[i].name, stockRemain[i].soldQty, stockRemain[i].price);
+	for(int i = 0; i < 3/*noOfItems*/; i++) {
+		printf("%d\t%s %d\t$%d\n", i + 1, stockRemain[i].name, stockRemain[i].qty, stockRemain[i].price);
 	}
 	printf("-------------------------------------------\n");
     printf(GREEN "\n\n\t\tReport Generated at \"C:\\report.txt\"" WHITE);    // FINISHED Report on Terminal
