@@ -30,7 +30,7 @@ struct reportData { // Reports
     float price;
     unsigned int ordersPlaced;
     // items sort a/c to sale
-} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
+} sold, stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top // es ka pointer bana kr phir dma kr lena
 
 void enter(int, const char *);    // Enter to program by your account
 void menu(int);
@@ -604,7 +604,7 @@ void genReport(/*int option, *//*int noOfItems or nP*/) {     // noOfitems reman
     fclose(reportBIN);  // DONE Storing in Binary
 
     // Generating Report (Text File)
-    reportTXT = fopen("C:\\report.txt", "a");  // Chk if address work
+    reportTXT = fopen("U:\\report.txt", "a");  // Chk if address work
     if(reportTXT == NULL) {
         perror(RED "\n\tError Processing Text File" WHITE);
         return;
@@ -651,7 +651,7 @@ void genReport(/*int option, *//*int noOfItems or nP*/) {     // noOfitems reman
 		printf("%d\t%s %d\t$%d\n", i + 1, stockRemain[i].name, stockRemain[i].qty, stockRemain[i].price);
 	}
 	printf("-------------------------------------------\n");
-    printf(GREEN "\n\n\t\tReport Generated at \"C:\\report.txt\"" WHITE);    // FINISHED Report on Terminal
+    printf(GREEN "\n\n\t\tReport Generated at \"U:\\report.txt\"" WHITE);    // FINISHED Report on Terminal
 	
     // file wali report open krwado system("cd C:\report.txt"); agr user view reports history
 }
