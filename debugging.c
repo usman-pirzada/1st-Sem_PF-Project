@@ -28,13 +28,12 @@ struct Report;
 
 void enter(int, const char *);    // Enter to program by your account
 void menu(int);
-// int database();
 int genReport(int);
 void addInventory();
 void removeInventory();
 void viewInventory();
 void addToCart(int n, float totalCost);
-// int removeFromCart(float *totalCost);
+void removeFromCart(float *totalCost);
 
 
 int main() {
@@ -111,7 +110,7 @@ int main() {
             default:
                 system("CLS");
                 printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
-                main(); // continue;
+                //main(); // continue;
         }
     }
     
@@ -156,18 +155,13 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         scanf("%14s", password);   // see 14 or 15
         // validate here length of username & password
 
-        for(int i = 0; i < count; i++) {
-        	printf("%s\n",accounts[i].password);
-        	printf("%s\n",password);
-        	printf("%s\n",username);
-        	printf("%s\n",accounts[i].username);
+        for(int i = 0; i < /*count*/20; i++) {	// 20 users limit
             if(strcmp(accounts[i].username, username) == 0 && strcmp(accounts[i].password, password) == 0) {
 //                 system("CLS");
 //                 printf(GREEN "\nLogin successful!!\n" WHITE);
 //                free(accounts);
                  return;
             } else {
-                //system("CLS");
                 printf(RED "\n\tInvalid Username or Password!!" WHITE);
                 //free(accounts);
                 main(); // while(attempts < 3) can be used from Input validation
@@ -193,11 +187,8 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
         fclose(fileWrite);
         free(accounts);
         // printf(GREEN "\nSignup successful!!\n" WHITE);    // prompt to be changed
-    } //else {    // Unnecessary, just for clarification
-    //   printf(RED "\n\n\tAn Unexpected Error Occured!!" WHITE);
-    //   free(accounts);
-    //   exit(1);
-    // }
+    }
+
 }
 
 // -------------------Enter (Login & SignUp) Function HERE--------------------
