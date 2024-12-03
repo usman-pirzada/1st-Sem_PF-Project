@@ -199,7 +199,7 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
     if(userType == 1) { // 1 for Admin
         while(1) {  // do{...}while(option != 5) can also be used
             printf("\nWhat would you like to do now:\n");
-            printf("\n 1) Add New Item to Inventory\n 2) Remove an Item from Inventory\n 3) View Inventory\n 4) LogOut\n 5) Exit Program\n"); // Remove User/Admin	//3) Generate Report\n 4) LogOut\n 5) Exit Program & LogOut
+            printf("\n 1) Add New Item to Inventory\n 2) Remove an Item from Inventory\n 3) View Inventory\n 4) Generate Report 5) LogOut\n 6) Exit Program\n"); // Remove User/Admin	//3) Generate Report\n 4) LogOut\n 5) Exit Program & LogOut
             scanf("%d", &option);
             switch(option) {
                 case 1:
@@ -213,9 +213,13 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
                 	viewInventory();
                     break;
                 case 4:
-                    return;     // Back to main as the user want to LogOut
-
-                case 5:
+                	genReport();
+                    break;
+				
+				case 5:
+					return;     // Back to main as the user want to LogOut
+					
+                case 6:
                     exit(0);    // Exit Program
 
                 default:
@@ -552,4 +556,103 @@ void removeFromCart(float *totalCost){                           // remove from 
     // Free
 	free(productName);
     free(line);
+}
+
+// -------------------Report Generate  Function HERE--------------
+struct reportData { // Reports
+	char name[20];
+    int qty;
+    float price;
+    unsigned int ordersPlaced;
+    // items sort a/c to sale
+} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
+
+// -------------------Report Generate  Function HERE--------------
+struct reportData { // Reports
+	char name[20];
+    int qty;
+    float price;
+    unsigned int ordersPlaced;
+    // items sort a/c to sale
+} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
+
+void genReport(/*int option, *//*int noOfItems or nP*/) {     // noOfitems remaning
+	int DD, MM, YYYY;
+	FILE *reportBIN = NULL;
+	FILE *reportTXT = NULL;	// For printing data at current time, not store each structure permanently & latest figures stored in a bin
+	// if time left you should print table by double pointer
+	printf("Enter current Date (Format: DD MM YYYY): ");	// To write date of Report generation before each report
+	scanf("%d %d %d", &DD, &MM, &YYYY);
+
+	/*
+	// counter return all struct values & apply calculations with previous data
+	//Calculations:
+	for(int i = 0; i < no; i++) {
+		sold[i].qty += // added to card finally;	// No. of items sold of each name
+		// Revenue generated += (sold[i].qty * sold[i].price;
+		// No. of items sold (total) += sold[i].qty;
+	}
+	*/
+    
+    // Storing Latest Report Data in Binary File
+	reportBIN = fopen("reportData.bin", "ab");  // apply if file unable to open
+    if(fileWrite == NULL) {
+        perror(RED "\n\tError Processing Binary File" WHITE);
+        return;
+    }
+	fwrite(reportBIN, struct Report sold, 1, sizeof(struct Report));	// Store one latest calculated struct for sold items in the bin
+	fwrite(reportBIN, struct Report stockRemain, 1, sizeof(struct Report));	// Store one latest calculated struct for sold items in the bin
+    fclose(reportBIN);  // DONE Storing in Binary
+
+    // Generating Report (Text File)
+    reportTXT = fopen("C:\\report.txt", "a");  // Chk if address work
+    if(fileWrite == NULL) {
+        perror(RED "\n\tError Processing Text File" WHITE);
+        return;
+    }
+    fprintf("\n\t\tReport Generated on Date: %s/%s/%s", DD, MM, YYYY);
+    // ----------------* SOLD *-----------------
+	fprintf("\n\n****************** Sales ******************\n");	// remove first \n\n for file writing
+	fprintf("-------------------------------------------\n");
+	fprintf(" S.No.\tIems\tSold Qty\tPrice\n");
+	// sorting not done yet, instead only highest & lowest sales can be printed
+	for(int i = 0; i < noOfItems; i++) {
+		printf("%d\t%s %d\t$%d\n", i + 1, sold[i].name, sold[i].qty, sold[i].price);
+	}
+	printf("-------------------------------------------\n");
+
+    // --------------* REMAINING *-----------------
+    printf("\n\n****************** Stock Level ******************\n");	// remove first \n\n for file writing
+	printf("-------------------------------------------\n");
+	printf(" S.No.\tIems\tRemaining Qty\tPrice\n");
+	// Sorting not done yet
+	for(int i = 0; i < noOfItems; i++) {
+		printf("%d\t%s %d\t$%d\n", i + 1, stockRemain[i].name, stockRemain[i].soldQty, stockRemain[i].price);
+	}
+	printf("-------------------------------------------\n");
+    fclose(reportTXT);  // DONE Appending in Text file
+
+	// Generating Report (Terminal)
+	printf("\n\n\t\tReport Generated on Date: %s/%s/%s", DD, MM, YYYY); // add color
+    // ---------------SALES-------------------
+	printf("\n\n****************** Sales ******************\n");	// remove first \n\n for file writing   // add color
+	printf("-------------------------------------------\n");
+	printf(" S.No.\tIems\tSold Qty\tPrice\n");
+	// sorting not done yet, instead only highest & lowest sales can be printed
+	for(int i = 0; i < noOfItems; i++) {
+		printf("%d\t%s %d\t$%d\n", i + 1, sales[i].name, sales[i].soldQty, sales[i].price);
+	}
+	printf("-------------------------------------------\n");
+    // ---------------STOCK LEVEL-------------------
+    printf("\n\n****************** Stock Level ******************\n");	// remove first \n\n for file writing   // add color
+	printf("-------------------------------------------\n");
+	printf(" S.No.\tIems\tRemaining Qty\tPrice\n");
+	// Sorting not done yet
+	for(int i = 0; i < noOfItems; i++) {
+		printf("%d\t%s %d\t$%d\n", i + 1, stockRemain[i].name, stockRemain[i].soldQty, stockRemain[i].price);
+	}
+	printf("-------------------------------------------\n");
+    printf(GREEN "\n\n\t\tReport Generated at \"C:\\report.txt\"" WHITE);    // FINISHED Report on Terminal
+	
+    // file wali report open krwado system("cd C:\report.txt"); agr user view reports history
 }
