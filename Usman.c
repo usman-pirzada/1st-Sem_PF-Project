@@ -42,15 +42,17 @@ struct reportData {     // Stats/Reports
 void enter(int, const char */*, int */);    // Enter to program by your account
 void menu(int);
 // int database();
-int genReport();
+void genReport();
 // int stock();
 // int selectAnimate();
+void addToCart(/*int n, float totalCost*/);
+void removeFromCart(/*float *totalCost*/);
 void addInventory();
 void removeInventory();
 void viewInventory();
 
 int main() {
-    int option, noOfAccounts;
+    int option;
     FILE *adminFile = NULL;
     FILE *userFile = NULL;
     system(""); // To enable formatting & colors
@@ -71,15 +73,15 @@ int main() {
                 enter(2, "Admins.bin"); // Pass 2 in parameter for admin signup & "Admins.bin" filename
                 system("CLS");
                 printf(GREEN"\n\tAdmin Account Added Successfully!\n" WHITE);
-                printf("\n How Many Maximum Number of Accounts Do You Want In Your System (You can change it later):"); // logic incomplete // see last comment
-                scanf("%d", &noOfAccounts);
-                if(noOfAccounts > 0 && noOfAccounts < 1000) {
-                    accountsCount = noOfAccounts + 1;   // noOfUsers + Admin (first one)
-                    printf(GREEN "\n\tOperation Successful!!\n" WHITE); // new added logic
-                } else {
-                    printf(RED "\n\tNumber of Users must be between 1 to 1000!!\n" WHITE);
-                    continue;
-                }
+                // printf("\n How Many Maximum Number of Accounts Do You Want In Your System (You can change it later):"); // logic incomplete // see last comment
+                // scanf("%d", &maxUsers);
+                // if(noOfAccounts > 0 && noOfAccounts < 1000) {
+                //     accountsCount = noOfAccounts + 1;   // noOfUsers + Admin (first one)
+                //     printf(GREEN "\n\tOperation Successful!!\n" WHITE); // new added logic
+                // } else {
+                //     printf(RED "\n\tNumber of Users must be between 1 to 1000!!\n" WHITE);
+                //     main();
+                // }
                 break;
             case 2:
                 printf("\nNow SignUp below for User Account\n");
@@ -133,8 +135,7 @@ int main() {
 
             default:
                 system("CLS");
-                printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
-                // main(); // continue;
+                printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);    // will start loop again now
         }
     }
     
@@ -142,7 +143,7 @@ int main() {
 }
 
 // -------------------Enter (Login & SignUp) Function HERE--------------------
-void enter(int log, const char *filename/*, int maxUsers*/) {  // variable is global  // log is 1 for Login & 2 for SignUp
+void enter(int log, const char *filename/*, int maxUsers*/) {  // log is 1 for Login & 2 for SignUp // variable is global  
     struct Account *accounts = NULL;    // see for correction
     accounts = (struct Account *) malloc(sizeof(struct Account));  // This size is enough to store SignUp data for writing to binary file   // Removed *accounts
     if(accounts == NULL) {
