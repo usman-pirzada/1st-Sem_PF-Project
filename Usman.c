@@ -20,8 +20,13 @@ struct Account {
     char username[20];
     char password[15];
 };
-
-struct reportData { // Reports
+struct product {
+    int ID;
+    char name[30];
+    int quantity;
+    float price;
+} prod;
+struct reportData {     // Stats/Reports
     int qtySold;
     int qtyRemain;
     float revenue;
@@ -30,7 +35,7 @@ struct reportData { // Reports
     // int qty;
     // float price;
     // items sort a/c to sale
-} *stats;      /**sold, *stockRemain;*/  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
+} stats;      /**sold, *stockRemain;*/  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
 // struct Database; // mujtaba
 // struct Stock;    // talal
 
@@ -409,7 +414,7 @@ void viewInventory() {
 }
 
 // -------------------Employee Related Functions HERE--------------
-void addToCart(/*int n, float totalCost*/){     // add to cart
+void addToCart(/*int nOI, float totalCost*/){     // add to cart
 
 	FILE *db = fopen("products.txt", "r"); // db = database
     if(db == NULL){
@@ -419,13 +424,13 @@ void addToCart(/*int n, float totalCost*/){     // add to cart
     
     struct product *cart = NULL;	// Dynamic memory allocation for products
 
-    int count = nOI;    // Counter for items & nOI is No of Items(Global Variable)
+    // int count = nOI;    // Counter for items & nOI is No of Items(Global Variable)
 
     while(1){
 
         // Allocating memory for the rising no.of products
 
-        cart = (struct product *)realloc(cart,(count + 1) * sizeof(struct product));
+        cart = (struct product *)realloc(cart,(nOI + 1) * sizeof(struct product));
         if(cart == NULL){
             printf("Memory Allocation Failed!\n");
             fclose(db);
@@ -433,14 +438,14 @@ void addToCart(/*int n, float totalCost*/){     // add to cart
         }
 
         printf("\nEnter the name of the item (or type 'exit' to finish): ");
-        scanf("%s", cart[count].name);
+        scanf("%s", cart[nOI].name);
 
-        if(strcmp(cart[count].name,"exit") == 0){
+        if(strcmp(cart[nOI].name,"exit") == 0){
             break;
         }
 
         printf("Enter Quantity: ");
-        scanf(" %d",&cart[count].quantity);
+        scanf(" %d",&cart[nOI].quantity);
         
         // Reset db pointer to beginning of file to search products.
         fseek(db, 0, SEEK_SET);
@@ -454,25 +459,22 @@ void addToCart(/*int n, float totalCost*/){     // add to cart
         	        	
         	sscanf(productName,"%s Quantity: %d Price: $%f",productName,&available,&price);
         	
-        	printf("\nPrice: %.2f\n",price);
-        	printf("Available: %d",available);
-        	
-            if(strcmp(productName,cart[count].name) == 0){
+            if(strcmp(productName,cart[nOI].name) == 0){
                 found = 1;
                 if(available<=0){
                     printf("\nThis item is out of stock");
                     continue;
-                }else if(available<cart[count].quantity){
+                }else if(available<cart[nOI].quantity){
 					printf("\nThere are only %d %s in the stock",available,productName);
 					continue;
 				}
                 printf("\nAdded to cart successfully!\n");
 
-                cart[count].price = price;
-                totalCost += cart[count].quantity * price;
+                cart[nOI].price = price;
+                totalCost += cart[nOI].quantity * price;
                 printf("\n\n%f\n",totalCost);
 
-				int fquantity = available - cart[count].quantity;
+				int fquantity = available - cart[nOI].quantity;
 
                 // Append the item and its details to order_history.txt
                 FILE *orderHistory = fopen("order_history.txt","a");
@@ -482,7 +484,9 @@ void addToCart(/*int n, float totalCost*/){     // add to cart
                     fclose(db);
                     return;
                 }
-                fprintf(orderHistory, "%s\tQuantity: %d\tPrice: $%.2f\n", cart[count].name, cart[count].quantity, price);
+                fprintf(orderHistory, "%s\tQuantity: %d\tPrice: $%.2f\n", cart[nOI].name, cart[nOI].quantity, price);
+                printf("\n\n\tBill:\n");
+                printf("%s\tQuantity: %d\tPrice: $%.2f\n", cart[nOI].name, cart[nOI].quantity, price);
                 fclose(orderHistory);
                 break;
             }

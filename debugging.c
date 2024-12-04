@@ -436,9 +436,6 @@ void addToCart(int n, float totalCost){                            // add to car
         	        	
         	sscanf(productName,"%s Quantity: %d Price: $%f",productName,&available,&price);
         	
-        	printf("\nPrice: %.2f\n",price);
-        	printf("Available: %d",available);
-        	
             if(strcmp(productName,cart[count].name) == 0){
                 found = 1;
                 if(available<=0){
