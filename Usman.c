@@ -9,6 +9,8 @@
 #define YELLOW "\033[33m"
 #define BLUE "\e[0;34m"
 #define GREEN "\e[0;32m"
+int maxUsers = 20;
+int nOI = 100;  // No of Items
 // #define usersCount 100   // count signups & file storing remaining
 // add pause fn in invalid prompt
 int accountsCount; // Max no. of that can be added // chk for no. of admins // default value is one but will cause issues when prog run again
@@ -18,14 +20,24 @@ struct Account {
     char username[20];
     char password[15];
 };
-// struct Database;
-// struct Stock;
-struct reportData;
+
+struct reportData { // Reports
+    int qtySold;
+    int qtyRemain;
+    float revenue;
+    int ordersPlaced;
+	// char name[20];
+    // int qty;
+    // float price;
+    // items sort a/c to sale
+} *stats;      /**sold, *stockRemain;*/  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
+// struct Database; // mujtaba
+// struct Stock;    // talal
 
 void enter(int, const char */*, int */);    // Enter to program by your account
 void menu(int);
 // int database();
-int genReport(int);
+int genReport();
 // int stock();
 // int selectAnimate();
 
@@ -114,7 +126,7 @@ int main() {
             default:
                 system("CLS");
                 printf(RED "\n\tInvalid Input!! Try Again\n" WHITE);
-                main(); // continue;
+                // main(); // continue;
         }
     }
     
@@ -122,7 +134,7 @@ int main() {
 }
 
 // -------------------Enter (Login & SignUp) Function HERE--------------------
-void enter(int log, const char *filename/*, int usersCount*/) {  // variable is global  // log is 1 for Login & 2 for SignUp
+void enter(int log, const char *filename/*, int maxUsers*/) {  // variable is global  // log is 1 for Login & 2 for SignUp
     struct Account *accounts = NULL;    // see for correction
     accounts = (struct Account *) malloc(sizeof(struct Account));  // This size is enough to store SignUp data for writing to binary file   // Removed *accounts
     if(accounts == NULL) {
@@ -133,7 +145,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
     if(log == 1) {  // 1 for login
         FILE *fileRead = NULL;
         char username[20], password[15];
-        accounts = (struct Account *) realloc(accounts, /*usersCount*/20 * sizeof(struct Account));   // * removed from beginning
+        accounts = (struct Account *) realloc(accounts, maxUsers * sizeof(struct Account));   // * removed from beginning
         if(accounts == NULL) {
             printf(RED "\nError Allocating Memory!!" WHITE);
             main();
@@ -198,7 +210,7 @@ void enter(int log, const char *filename/*, int usersCount*/) {  // variable is 
     // }
 }
 
-// -------------------Enter (Login & SignUp) Function HERE--------------------
+// -------------------MENU Function HERE--------------------
 
 void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
     int option;
@@ -206,7 +218,7 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
     if(userType == 1) { // 1 for Admin
         while(1) {  // do{...}while(option != 5) can also be used
             printf("\nWhat would you like to do now:\n");
-            printf("\n 1) Add New Item to Stock\n 2) View Stock Status\n 3) Generate Report\n 4) LogOut\n 5) Exit Program & LogOut\n"); // Remove User/Admin
+            printf("\n 1) Add New Item to Stock\n 2) View Stock Status\n 3) Generate Stats/Report\n 4) LogOut\n 5) Exit Program\n"); // Remove User/Admin
             scanf("%d", &option);
             switch(option) {
                 case 1:
@@ -219,7 +231,7 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
                     // Send control to my function for generating report
                     break;
                 case 4:
-                    return;     // Back to main as the user want to LogOut
+                    return;     // Back to main menu as the user want to LogOut
                     break;
 
                 case 5:
@@ -234,7 +246,7 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
     } else if(userType == 2) {  // 2 for User
         while(1) {  // do{...}while(option != 5) can also be used
             printf("\nWhat would you like to do now:\n");
-            printf("\n 1) Add Item to Card\n 2) Remove Item from Card\n 3) Place Order\n 4) LogOut\n 5) Exit Program & Logout\n");
+            printf("\n 1) Add Item to Card\n 2) Remove Item from Card\n 3) Place Order\n 4) LogOut\n 5) Exit Program\n");
             scanf("%d", &option);
             switch(option) {
                 case 1:
@@ -263,22 +275,15 @@ void menu(int userType) {   // 1 for Admin & 2 for Ordinary User
     }
 }
 
-// -------------------Report Generate  Function HERE--------------
-struct reportData { // Reports
-	char name[20];
-    int qty;
-    float price;
-    unsigned int ordersPlaced;
-    // items sort a/c to sale
-} *sold, *stockRemain;  // sold: Sold Items' table & stockRemain: Stock Items Table // malloc not done // shift struct to top
+// -------------------Stats/Report Generate  Function HERE--------------
 
-void genReport(/*int option, */int noOfItems) {     // noOfitems remaning
-	int DD, MM, YYYY;
+void genReport() {     // Para: /*int option, int noOfItems*/
+	int Date, Month, Year;
 	FILE *reportBIN = NULL;
 	FILE *reportTXT = NULL;	// For printing data at current time, not store each structure permanently & latest figures stored in a bin
 	// if time left you should print table by double pointer
 	printf("Enter current Date (Format: DD MM YYYY): ");	// To write date of Report generation before each report
-	scanf("%d %d %d", &DD, &MM, &YYYY);
+	scanf("%d %d %d", &Date, &Month, &Year);
 
 	/*
 	// counter return all struct values & apply calculations with previous data
@@ -353,6 +358,8 @@ void genReport(/*int option, */int noOfItems) {     // noOfitems remaning
     // file wali report open krwado system("cd C:\report.txt"); agr user view reports history
 }
 
+
+// XX-----------------XX----------------------XX
 /*Not Used
 	// Display Report by 2D Pointers
     for(int i = 0; i < 1; i++) {
